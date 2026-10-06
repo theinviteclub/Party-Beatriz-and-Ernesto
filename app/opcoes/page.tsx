@@ -7,7 +7,7 @@ export default function Options() {
     <main className="options">
       <h1>Opções de capa</h1>
       {(Object.keys(HERO_NAMES) as HeroVariant[]).map((v) => (
-        <a key={v} href={`${BASE_PATH}/opcoes/${v}/`}>{v.toUpperCase()} · {HERO_NAMES[v]}</a>
+        <a key={v} href={`${BASE_PATH}/opcoes/${v}`}>{v.toUpperCase()} · {HERO_NAMES[v]}</a>
       ))}
     </main>
   );
