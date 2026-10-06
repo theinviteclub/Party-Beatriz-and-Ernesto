@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Hero from "./Hero";
 
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
 const TIME = "19h30";
 const VENUE = { name: "Velho Monge", address: "R. Feira de Santana, 17 - Parque 10 de Novembro" };
-// TODO: definir a data da festa (formato ISO, ex.: "2026-10-31T19:30:00-04:00"). Com null o site mostra "data em breve".
-const EVENT_DATE: Date | null = null;
+const EVENT_DATE: Date | null = new Date("2026-10-17T19:30:00-04:00");
 // TODO: trocar pelo formulário do casal (https://formspree.io/f/xxxx). Vazio = formulário desativado.
 const FORMSPREE_ENDPOINT = "";
 
@@ -189,27 +189,7 @@ export default function Home() {
 
   return (
     <main>
-      <section className="hero" id="inicio">
-        <Stars count={28} />
-        <div className="moon" aria-hidden="true" />
-        <nav aria-label="Navegação principal">
-          <a className="wordmark" href="#inicio">{COUPLE.first} & {COUPLE.second} <i>✦</i></a>
-          <div className="nav-links"><a className="nav-date" href="#detalhes">{TIME}</a></div>
-        </nav>
-        <div className="hero-copy reveal">
-          <p className="eyebrow">Uma noite de lua, tarot e estrelas</p>
-          <h1><span>{COUPLE.first}</span><em>&</em><span>{COUPLE.second}</span></h1>
-          <p className="party-name">Save the date</p>
-          <div className="date-lockup"><span>Halloween</span><strong>{EVENT_DATE ? "" : "data em breve"} · {TIME}</strong></div>
-          <p className="hero-note">Separe a data e escolha sua carta favorita.</p>
-          {EVENT_DATE && (
-            <div className="actions">
-              <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>
-            </div>
-          )}
-        </div>
-        <a className="scroll" href="#tema">deslize para descobrir ↓</a>
-      </section>
+      <Hero variant="a" dateLabel="Sáb · 17.10.2026" time={TIME} />
 
       <section className="ticker" aria-hidden="true"><div>✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS</div></section>
 

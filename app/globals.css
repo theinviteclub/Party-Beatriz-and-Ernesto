@@ -136,3 +136,27 @@ footer { background:#070a20; color:var(--gold-soft); padding:22px clamp(20px,6vw
   .date-lockup { flex-direction:column; gap:4px; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; scroll-behavior:auto !important; } }
+
+/* capa em retrato */
+.hero-stage { min-height:100svh; display:grid; place-items:center; background:#070a20; }
+.portrait { position:relative; overflow:hidden; width:min(100%,500px); height:min(100svh,920px); min-height:640px; color:var(--cream); text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center; background:radial-gradient(ellipse at 50% 45%,#5a2f6e,#3d1d52 55%,#2a1040); }
+.portrait::before { content:""; position:absolute; inset:0; opacity:.35; background-image:repeating-linear-gradient(0deg,#0000 0 2px,#00000022 2px 3px),repeating-linear-gradient(90deg,#0000 0 2px,#00000022 2px 3px); }
+@media (min-width:600px) { .portrait { border-radius:28px; } }
+.portrait .p { position:absolute; height:auto; pointer-events:none; filter:drop-shadow(0 4px 10px #0008); }
+.portrait .cloud { filter:none; }
+.portrait-copy { position:relative; z-index:2; padding:0 12%; display:flex; flex-direction:column; align-items:center; text-shadow:0 2px 14px #1a0a2acc; }
+.portrait h1 { font-size:clamp(2.6rem,12vw,4.6rem); text-transform:uppercase; display:flex; flex-direction:column; align-items:center; }
+.portrait h1 em { font-size:.5em; line-height:.9; }
+.portrait .date-lockup { margin:0 auto 1em; align-items:center; flex-direction:column; gap:2px; text-align:center; }
+.portrait .party-name { margin:1em 0 .8em; font-size:.85rem; }
+.portrait .eyebrow { font-size:.62rem; color:var(--gold-soft); margin-bottom:1em; }
+.portrait .scroll { position:absolute; bottom:16px; z-index:3; background:#2a1040cc; padding:6px 14px; border-radius:999px; }
+.portrait-b { background:linear-gradient(180deg,#0b1030,#2a1040 55%,#4a2260); }
+.portrait-b .portrait-copy { margin-top:18%; }
+.portrait-d { background:linear-gradient(160deg,#14215a,#2a0f3d 60%,#3d1d52); }
+.tarot-frame { position:absolute; inset:14px; border:2px solid var(--gold); border-radius:22px; z-index:3; pointer-events:none; box-shadow:inset 0 0 0 6px #0000,inset 0 0 0 7px #d9a44155; }
+.tarot-numeral { font-family:"Cinzel",serif; color:var(--gold); border:1px solid var(--gold); border-radius:999px; padding:4px 22px; letter-spacing:.3em; margin-bottom:1.2em; }
+.options { min-height:100svh; background:var(--night); color:var(--cream); display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center; padding:24px; }
+.options a { color:var(--gold); border:1px solid var(--gold); border-radius:999px; padding:14px 28px; text-decoration:none; font-family:"Cinzel",serif; }
+/* a imagem da nuvem é cortada reta na lateral esquerda; esmaece essa borda para não aparecer emenda */
+.portrait .cloud { -webkit-mask-image:linear-gradient(to right,transparent 0,#000 38%); mask-image:linear-gradient(to right,transparent 0,#000 38%); }
