@@ -2,42 +2,26 @@
 
 import { useEffect, useState } from "react";
 
-const EVENT_DATE = new Date("2026-09-05T19:30:00-04:00");
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const COUPLE = { first: "Beatriz", second: "Ernesto" };
+const TIME = "19h30";
+const VENUE = { name: "Velho Monge", address: "R. Feira de Santana, 17 - Parque 10 de Novembro" };
+// TODO: definir a data da festa (formato ISO, ex.: "2026-10-31T19:30:00-04:00"). Com null o site mostra "data em breve".
+const EVENT_DATE: Date | null = null;
+// TODO: trocar pelo formulário do casal (https://formspree.io/f/xxxx). Vazio = formulário desativado.
+const FORMSPREE_ENDPOINT = "";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlgqaybl";
-
-const PERUCA_IMAGES = [
-  `${BASE_PATH}/peruca/1.png`,
-  `${BASE_PATH}/peruca/2.png`,
-  `${BASE_PATH}/peruca/3.png`,
-  `${BASE_PATH}/peruca/4.png`,
-];
-
-const MOOD_IMAGES = [
-  `${BASE_PATH}/moods/imagem1.jpg`,
-  `${BASE_PATH}/moods/imagem2.jpg`,
-  `${BASE_PATH}/moods/imagem3.jpg`,
-  `${BASE_PATH}/moods/imagem4.jpg`,
-  `${BASE_PATH}/moods/imagem5.jpg`,
-  `${BASE_PATH}/moods/imagem6.jpg`,
-  `${BASE_PATH}/moods/imagem7.jpg`,
-  `${BASE_PATH}/moods/imagem8.jpg`,
-  `${BASE_PATH}/moods/imagem9.jpg`,
-  `${BASE_PATH}/moods/imagem10.jpg`,
-  `${BASE_PATH}/moods/imagem11.jpg`,
-];
+const MOOD_SLOTS = 8;
 
 function pad(value: number) {
   return String(Math.max(0, value)).padStart(2, "0");
 }
 
-function Countdown() {
+function Countdown({ date }: { date: Date }) {
   const [remaining, setRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     const update = () => {
-      const difference = Math.max(0, EVENT_DATE.getTime() - Date.now());
+      const difference = Math.max(0, date.getTime() - Date.now());
       setRemaining({
         days: Math.floor(difference / 86400000),
         hours: Math.floor((difference / 3600000) % 24),
@@ -48,7 +32,7 @@ function Countdown() {
     update();
     const timer = window.setInterval(update, 1000);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [date]);
 
   return (
     <div className="countdown" aria-label="Contagem regressiva para a festa">
@@ -62,46 +46,33 @@ function Countdown() {
   );
 }
 
-function saveCalendar() {
-  const calendar = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Wig Party da Ju//Save the Date//PT-BR",
-    "BEGIN:VEVENT", "UID:wig-party-ju-2026@save-the-date", "DTSTAMP:20260716T120000Z",
-    "DTSTART:20260905T193000", "DTEND:20260905T233000", "SUMMARY:Wig Party da Ju",
-    "LOCATION:Barão Brejas & Burgers - R. Amapá\\, 4 - Conj. Vieiralves\\, Manaus - AM\\, 69053-150", "DESCRIPTION:Comemore os 25 da Ju! Horário: 19h30. No Barão Brejas & Burgers\\, no Vieiralves. Já pode procurar sua peruca!",
+function ics(date: Date) {
+  const f = (d: Date) => {
+    const p = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}T${p(d.getHours())}${p(d.getMinutes())}00`;
+  };
+  return [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Beatriz e Ernesto//Save the Date//PT-BR",
+    "BEGIN:VEVENT", "UID:beatriz-ernesto-halloween@save-the-date", `DTSTAMP:${f(new Date())}`,
+    `DTSTART:${f(date)}`, `DTEND:${f(new Date(date.getTime() + 5 * 3600000))}`,
+    "SUMMARY:Festa de Beatriz e Ernesto",
+    `LOCATION:${VENUE.name} - ${VENUE.address}`.replace(/,/g, "\\,"),
+    `DESCRIPTION:Halloween\\, lua\\, tarot e estrelas. Horário: ${TIME}.`,
     "END:VEVENT", "END:VCALENDAR",
   ].join("\r\n");
-  const url = URL.createObjectURL(new Blob([calendar], { type: "text/calendar;charset=utf-8" }));
+}
+
+function saveCalendar() {
+  if (!EVENT_DATE) return;
+  const url = URL.createObjectURL(new Blob([ics(EVENT_DATE)], { type: "text/calendar;charset=utf-8" }));
   const link = document.createElement("a");
   link.href = url;
-  link.download = "wig-party-da-ju.ics";
+  link.download = "beatriz-e-ernesto.ics";
   link.rel = "noopener";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-function PerucaFlashBox({ images }: { images: string[] }) {
-  const [index, setIndex] = useState(0);
-  const [flash, setFlash] = useState(false);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setFlash(true);
-      window.setTimeout(() => setFlash(false), 120);
-      setIndex((current) => (current + 1) % images.length);
-    }, 500);
-    return () => window.clearInterval(timer);
-  }, [images.length]);
-
-  return (
-    <div className="peruca-flashbox" aria-hidden="true">
-      {images.map((src, i) => (
-        <img key={i} src={src} alt="" className={i === index ? "is-active" : ""} />
-      ))}
-      <div className={`peruca-flash${flash ? " is-flashing" : ""}`} />
-    </div>
-  );
 }
 
 type Guest = { name: string };
@@ -128,6 +99,10 @@ function RsvpForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!attending || !name.trim()) return;
+    if (!FORMSPREE_ENDPOINT) {
+      setStatus("error");
+      return;
+    }
 
     setStatus("sending");
     try {
@@ -150,7 +125,7 @@ function RsvpForm() {
     return (
       <div className="rsvp-card rsvp-sent">
         <p>✦ Resposta enviada!</p>
-        <h3>{attending === "yes" ? "Bora comemorar os 25 da Ju!" : attending === "maybe" ? "Bora ver se dá certo!" : "Que pena, você vai fazer falta!"}</h3>
+        <h3>{attending === "yes" ? "Te esperamos na noite das estrelas!" : attending === "maybe" ? "Vamos torcer pelas cartas!" : "Que pena, você vai fazer falta!"}</h3>
       </div>
     );
   }
@@ -190,54 +165,66 @@ function RsvpForm() {
           <button type="submit" className="button primary" disabled={status === "sending"}>
             {status === "sending" ? "Enviando..." : "Confirmar resposta"}
           </button>
-          {status === "error" && <p className="rsvp-error">Não consegui enviar. Tenta de novo em instantes.</p>}
+          {status === "error" && (
+            <p className="rsvp-error">
+              {FORMSPREE_ENDPOINT ? "Não consegui enviar. Tenta de novo em instantes." : "O formulário ainda não está ativo."}
+            </p>
+          )}
         </div>
       )}
     </form>
   );
 }
 
+function Stars({ count }: { count: number }) {
+  return (
+    <div className="stars" aria-hidden="true">
+      {Array.from({ length: count }, (_, index) => <i key={index} style={{ left: `${(index * 37) % 100}%`, top: `${(index * 53) % 100}%`, animationDelay: `${-index * 0.4}s`, scale: 0.6 + (index % 4) * 0.5 }} />)}
+    </div>
+  );
+}
+
 export default function Home() {
+  const dateLabel = EVENT_DATE ? "Data" : "Data em breve";
+
   return (
     <main>
       <section className="hero" id="inicio">
-        <div className="hero-starburst" aria-hidden="true" />
-        <div className="hero-star-sparks" aria-hidden="true">{Array.from({ length: 18 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}</div>
-        <div className="flash" aria-hidden="true" />
-        <div className="hero-glow" aria-hidden="true" />
+        <Stars count={28} />
+        <div className="moon" aria-hidden="true" />
         <nav aria-label="Navegação principal">
-          <a className="wordmark" href="#inicio">JULIANA CONVIDA <i>✦</i></a>
-          <div className="nav-links"><a className="nav-date" href="#detalhes">05.09.26</a></div>
+          <a className="wordmark" href="#inicio">{COUPLE.first} & {COUPLE.second} <i>✦</i></a>
+          <div className="nav-links"><a className="nav-date" href="#detalhes">{TIME}</a></div>
         </nav>
         <div className="hero-copy reveal">
-          <p className="eyebrow">Comemore os 25 da Ju</p>
-          <h1 className="h1-small"><span>Wig</span><em>Party</em></h1>
+          <p className="eyebrow">Uma noite de lua, tarot e estrelas</p>
+          <h1><span>{COUPLE.first}</span><em>&</em><span>{COUPLE.second}</span></h1>
           <p className="party-name">Save the date</p>
-          <div className="date-lockup"><span>SÁB</span><strong>05 · 09 · 2026</strong></div>
-          <div className="date-glitter-beam" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /><i /><i /></div>
-          <p className="hero-note">Separe a data e procure sua peruca.</p>
-          <div className="actions">
-            <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>
-          </div>
+          <div className="date-lockup"><span>Halloween</span><strong>{EVENT_DATE ? "" : "data em breve"} · {TIME}</strong></div>
+          <p className="hero-note">Separe a data e escolha sua carta favorita.</p>
+          {EVENT_DATE && (
+            <div className="actions">
+              <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>
+            </div>
+          )}
         </div>
         <a className="scroll" href="#tema">deslize para descobrir ↓</a>
       </section>
 
-      <section className="ticker" aria-hidden="true"><div>COLOQUE A PERUCA ✦ ESCOLHA SUA PERSONALIDADE ✦ 05.09.2026 ✦ COLOQUE A PERUCA ✦ ESCOLHA SUA PERSONALIDADE ✦</div></section>
+      <section className="ticker" aria-hidden="true"><div>✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS</div></section>
 
       <section className="intro section" id="tema">
-        <div className="intro-sparkles" aria-hidden="true">{Array.from({ length: 10 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}</div>
         <div className="section-number">01 / O TEMA</div>
         <div className="intro-grid">
           <div className="intro-copy">
-            <h2>Venha <em>comemorar</em> comigo!</h2>
+            <h2>Venha <em>celebrar</em> com a gente!</h2>
             <div className="body-copy">
-              <p>Esse ano, eu vou fazer 25 anos!</p>
-              <p>E você fez parte dessa história até aqui. Então, é claro que não podia ficar de fora dessa comemoração.</p>
-              <p>E veio com uma <b>condição</b>: apareça de <b style={{ color: "var(--pink)" }}>peruca</b>. Colorida, curta, longa, natural ou completamente diferente do seu cabelo. Escolha a que mais combinar com a sua personalidade da noite. Agora é só vir e se divertir!</p>
+              <p>{COUPLE.first} e {COUPLE.second} estão preparando uma noite feita de Halloween, lua cheia, cartas de tarot e céu estrelado.</p>
+              <p>Você faz parte dessa história, então não podia ficar de fora.</p>
+              <p>Venha com uma <b>carta</b> na manga: vista-se de bruxa, de lua, de estrela, de gato preto ou da sua carta de tarot favorita.</p>
             </div>
           </div>
-          <img className="intro-photo" src={`${BASE_PATH}/25ANOS.png`} alt="Colagem dos 25 anos da Ju" />
+          <div className="slot slot-tall" data-slot="intro">imagem do tema</div>
         </div>
       </section>
 
@@ -245,116 +232,93 @@ export default function Home() {
         <div className="section-number light">02 / DICAS</div>
         <div className="dress-heading">
           <h2>Anota essas <span>dicas</span></h2>
-          <p>Vista algo casual pra sair à noite</p>
+          <p>Escolha sua carta e entre no clima</p>
         </div>
-
         <div className="tips-grid">
           <article className="tip-card">
-            <span>Onde achar peruca</span>
-            <p>Lojas do centro de festa ou de fantasia, boa pedida pra comprar.</p>
-            <a href="https://maps.app.goo.gl/XVS6Dhq5tcLKct2o9" target="_blank" rel="noopener noreferrer">Ver rua de lojas de festa no mapa ↗</a>
+            <span>Tarot</span>
+            <p>Vá de O Sol, A Lua, A Estrela, A Sacerdotisa... ou qualquer carta que combine com você.</p>
           </article>
           <article className="tip-card">
-            <span>Ou compre online</span>
-            <p>Também tem como achar em lojas online - Shopee, AliExpress, etc.</p>
+            <span>Bruxaria</span>
+            <p>Chapéu de bruxa, capa, gato preto: tudo bem-vindo.</p>
           </article>
           <article className="tip-card">
-            <span>Reaproveite uma peruca</span>
-            <p>Aquela peruca parada aí conta! Até a peruca da Copa ou de brilho serve pra fazer graça.</p>
+            <span>Céu estrelado</span>
+            <p>Brilho, dourado e azul-noite deixam a festa ainda mais mágica.</p>
           </article>
           <article className="tip-card tip-card-note">
-            <span>Sobre o restaurante</span>
-            <p>Barão Brejas & Burgers, no Vieiralves.</p>
+            <span>Sobre o local</span>
+            <p>{VENUE.name}, no Parque 10 de Novembro.</p>
           </article>
         </div>
-
-        <div className="tips-monkeys" aria-hidden="true">
-          <img className="monkey monkey-1" src={`${BASE_PATH}/macaconovo1.png`} alt="" />
-          <img className="monkey monkey-2" src={`${BASE_PATH}/macaconovo2.png`} alt="" />
-          <img className="monkey monkey-3" src={`${BASE_PATH}/macaconovo3.png`} alt="" />
-        </div>
-
-        <p className="only-rule">A única regra é <em>aparecer de peruca!</em></p>
+        <p className="only-rule">A única regra é <em>entrar no clima!</em></p>
       </section>
 
       <section className="details section" id="detalhes">
-        <img className="details-disco-gold" src={`${BASE_PATH}/globo-dourado.png`} alt="" aria-hidden="true" />
         <div className="section-number">03 / ANOTE AÍ</div>
-        <div className="details-title"><p>uma noite para celebrar</p><h2>05<br /><em>setembro</em><br />2026</h2></div>
+        <div className="details-title"><p>uma noite para celebrar</p><h2>{COUPLE.first}<br /><em>&</em><br />{COUPLE.second}</h2></div>
         <div className="detail-cards">
-          <article><span>Data</span><strong>Sábado, 5 de setembro<br />de 2026</strong></article>
-          <article><span>Horário</span><strong>19h30</strong></article>
-          <article><span>Local</span><strong>Barão Brejas & Burgers</strong><small>R. Amapá, 4 - Conj. Vieiralves, Manaus - AM</small></article>
+          <article><span>Data</span><strong>{EVENT_DATE ? EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : dateLabel}</strong></article>
+          <article><span>Horário</span><strong>{TIME}</strong></article>
+          <article><span>Local</span><strong>{VENUE.name}</strong><small>{VENUE.address}</small></article>
         </div>
-        <Countdown />
+        {EVENT_DATE && <Countdown date={EVENT_DATE} />}
       </section>
 
       <section className="rsvp section" id="presenca">
-        <img className="rsvp-disco-silver" src={`${BASE_PATH}/ponta-globo-prata.png`} alt="" aria-hidden="true" />
         <div className="section-number">04 / VOCÊ VAI?</div>
         <div className="rsvp-heading">
           <h2>Confirme sua<br /><em>presença</em></h2>
-          <p>Me conta se vai comemorar os 25 da Ju e se leva alguém junto.</p>
+          <p>Conte pra gente se você vem e se leva alguém junto.</p>
         </div>
         <div className="rsvp-form-wrap">
-          <img className="rsvp-arrow" src={`${BASE_PATH}/setarosa1.png`} alt="" aria-hidden="true" />
           <RsvpForm />
         </div>
       </section>
 
       <section className="gallery section">
-        <div className="mood-bg" aria-hidden="true">
-          {Array.from({ length: 30 }, (_, i) => (
-            <img key={i} src={MOOD_IMAGES[i % MOOD_IMAGES.length]} alt="" />
-          ))}
-        </div>
         <div className="section-number">05 / REFERÊNCIAS</div>
         <div className="refs-heading">
           <h2>Mood da<br /><em>noite</em></h2>
-          <p>Algumas referências de peruca e look pra te inspirar.</p>
+          <p>Algumas referências de look e clima pra te inspirar.</p>
         </div>
         <div className="moodboard">
-          {MOOD_IMAGES.map((src, index) => (
-            <img key={src} className={`mood-item mood-item-${index + 1}`} src={src} alt={`Referência ${index + 1}`} />
+          {Array.from({ length: MOOD_SLOTS }, (_, index) => (
+            <div key={index} className="slot" data-slot={`mood-${index + 1}`}>referência {index + 1}</div>
           ))}
-          <div className="mood-flashbox">
-            <PerucaFlashBox images={PERUCA_IMAGES} />
-          </div>
         </div>
       </section>
 
       <section className="mission section">
         <div className="mission-card">
           <p className="section-number light">06 / PRA NÃO ESQUECER</p>
-          <h2>Até setembro...</h2>
+          <h2>Até a festa...</h2>
           <ol>
-            <li><b>01</b><span>Reservar sábado, dia 5 de setembro.</span><i>✓</i></li>
-            <li><b>02</b><span>Escolher uma peruca.</span><i>○</i></li>
-            <li><b>03</b><span>Escolher músicas pra arrasar.</span><i>○</i></li>
-            <li><b>04</b><span>Anotar o endereço do restaurante.</span><i>○</i></li>
+            <li><b>01</b><span>Reservar a data.</span><i>○</i></li>
+            <li><b>02</b><span>Escolher sua carta ou fantasia.</span><i>○</i></li>
+            <li><b>03</b><span>Confirmar presença.</span><i>○</i></li>
+            <li><b>04</b><span>Anotar o endereço: {VENUE.name}.</span><i>○</i></li>
           </ol>
-          <p className="mission-foot">O resto vem depois —<br /><em>por enquanto, só procure uma peruca.</em></p>
+          <p className="mission-foot">O resto vem depois —<br /><em>por enquanto, só escolha sua carta.</em></p>
         </div>
       </section>
 
       <section className="closing section">
-        <div className="closing-disco" aria-hidden="true"><span /></div>
-        <div className="closing-reflections" aria-hidden="true">{Array.from({ length: 14 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}</div>
-        <p className="closing-top">Comemore os 25 da Ju —</p>
-        <h2>vem <em>cantar</em><br />comigo?</h2>
-        <div className="closing-date">05 <span>/</span> 09 <span>/</span> 2026</div>
+        <Stars count={20} />
+        <p className="closing-top">{COUPLE.first} & {COUPLE.second} —</p>
+        <h2>vem <em>brilhar</em><br />com a gente?</h2>
         <div className="actions centered">
-          <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>
-          <a className="button ghost light-button" href="#presenca">Confirmar presença 🎤</a>
+          {EVENT_DATE && <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>}
+          <a className="button ghost" href="#presenca">Confirmar presença ☾</a>
         </div>
-        <p className="last-line">Seu cabelo pode até faltar, mas você não.</p>
+        <p className="last-line">As estrelas já sabem: você não pode faltar.</p>
       </section>
       <footer>
         <div className="footer-row">
-          <span>Wig Party da Ju · 2026</span>
+          <span>{COUPLE.first} & {COUPLE.second}</span>
           <span>✦ Save the Date ✦</span>
         </div>
-        <span className="footer-ps">PS: amigos designers, site feito com muita IA e muito Pinterest, favor não dar zoom e olhar detalhes :)</span>
       </footer>
     </main>
   );

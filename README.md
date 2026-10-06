@@ -1,28 +1,19 @@
-# Save the Date · Wig Party da Ju
+# Save the Date · Beatriz & Ernesto
 
-Convite interativo para o aniversário da Juliana em **quinta-feira, 3 de setembro de 2026**.
+Convite interativo (Halloween, lua, tarot e estrelas). Publicado via GitHub Pages pelo workflow `.github/workflows/pages.yml`.
 
-## Publicação no GitHub Pages
+Endereço: https://theinviteclub.github.io/Party-Beatriz-and-Ernesto/
 
-O projeto já inclui o workflow `.github/workflows/pages.yml`. Depois de enviar a branch `main` para um repositório público:
+## Pendências (em `app/page.tsx`)
 
-1. Abra **Settings → Pages** no repositório.
-2. Em **Build and deployment**, selecione **GitHub Actions**.
-3. Aguarde a ação “Publicar convite no GitHub Pages”.
-
-Endereço : `https://juliana039.github.io/save-the-date/`.
+- `EVENT_DATE`: definir a data da festa (hoje `null`, o site mostra "data em breve").
+- `FORMSPREE_ENDPOINT`: colocar o formulário do casal (hoje vazio, formulário desativado).
+- Imagens: os blocos tracejados (`.slot`) são os lugares das colagens e referências.
 
 ## Desenvolvimento
 
 ```bash
 npm install
 npm run dev
-```
-
-Para validar a versão estática do GitHub Pages:
-
-```bash
 npm run build:pages
 ```
-
-O convite foi estruturado para receber, na segunda etapa, horário, endereço e confirmação de presença sem trocar de site.
