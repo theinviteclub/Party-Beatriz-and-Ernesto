@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       <div className="ribbon" aria-hidden="true">
-        <div>✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦</div>
+        <div>Que a lua nos guie, as estrelas nos reúnam e o banquete seja longo ✦ Que a lua nos guie, as estrelas nos reúnam e o banquete seja longo ✦ Que a lua nos guie, as estrelas nos reúnam e o banquete seja longo ✦ Que a lua nos guie, as estrelas nos reúnam e o banquete seja longo ✦ </div>
       </div>
 
       {/* 2 · O decreto */}
