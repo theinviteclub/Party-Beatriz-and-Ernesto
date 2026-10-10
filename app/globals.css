@@ -180,17 +180,17 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
 .candle-flame { position:absolute; left:50%; bottom:calc(100% - 10px); width:100%; max-width:none; height:auto; z-index:2; translate:-50% 0; transform-origin:50% 100%; animation:flicker 1.4s ease-in-out infinite alternate; filter:drop-shadow(0 0 14px #ffb84a); mix-blend-mode:screen; }
 
 /* bola de cristal e cartas */
-.oracle { position:relative; width:min(100%,380px); margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:0; }
-.oracle-cards { display:flex; justify-content:center; gap:3%; width:100%; margin-bottom:-6%; position:relative; z-index:2; }
-.oc { width:30%; perspective:900px; rotate:var(--tilt); }
+.oracle { position:relative; width:min(100%,420px); margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:0; }
+.oracle-cards { display:flex; justify-content:center; gap:2.5%; width:100%; margin-bottom:2%; position:relative; z-index:2; }
+.oc { width:31%; perspective:900px; rotate:var(--tilt); }
 .oc-float { animation:cardFloat 5.5s ease-in-out infinite; animation-delay:var(--d); }
-.oc-inner { position:relative; aspect-ratio:526/900; transform-style:preserve-3d; animation:cardFlip 10s ease-in-out infinite; animation-delay:var(--d); }
-.oc-face { position:absolute; inset:0; width:100%; height:100%; -webkit-backface-visibility:hidden; backface-visibility:hidden; filter:drop-shadow(0 8px 12px #000a); }
+.oc-inner { position:relative; aspect-ratio:200/330; transform-style:preserve-3d; animation:cardFlip 10s ease-in-out infinite; animation-delay:var(--d); }
+.oc-face { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; -webkit-backface-visibility:hidden; backface-visibility:hidden; filter:drop-shadow(0 8px 12px #000a); }
 .oc-front { transform:rotateY(180deg); }
 @keyframes cardFlip { 0%,10%{transform:rotateY(0)} 20%,62%{transform:rotateY(180deg)} 72%,100%{transform:rotateY(360deg)} }
 @keyframes cardFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 
-.ball { position:relative; width:78%; z-index:1; }
+.ball { position:relative; width:46%; z-index:1; }
 .ball-halo { position:absolute; inset:-18%; border-radius:50%; background:radial-gradient(circle,#b9a6ff88 0,#7a5cff44 38%,transparent 68%); animation:halo 4.5s ease-in-out infinite; }
 @keyframes halo { 0%,100%{transform:scale(.88);opacity:.55} 50%{transform:scale(1.12);opacity:1} }
 .ball-wrap { position:relative; animation:ballFloat 7s ease-in-out infinite; }
@@ -214,3 +214,12 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
 .knights-sheet .divider { margin-left:auto; }
 .knights-sheet h2 { text-align:center; }
 .knights-sheet .section-number { text-align:center; }
+
+/* pontos de luz orbitando a bola */
+.orbit { position:absolute; left:50%; top:46%; aspect-ratio:1; translate:-50% -50%; border-radius:50%; pointer-events:none; z-index:3; }
+.orbit i { position:absolute; inset:0; transform:rotate(var(--a)); }
+.orbit i::after { content:""; position:absolute; left:50%; top:0; width:var(--sz); height:var(--sz); margin:calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2); border-radius:50%; background:radial-gradient(circle,#fffbe6 0,#ffe08a 50%,#ffcf5a00 75%); box-shadow:0 0 10px 3px #ffe08aaa,0 0 22px 7px #b9a6ff66; animation:orbitBlink 2.6s ease-in-out infinite; animation-delay:inherit; }
+.orbit-a { width:150%; --sz:9px; animation:orbitSpin 16s linear infinite; }
+.orbit-b { width:116%; --sz:6px; animation:orbitSpin 11s linear infinite reverse; }
+@keyframes orbitSpin { to { rotate:360deg; } }
+@keyframes orbitBlink { 0%,100%{opacity:.35;transform:scale(.7)} 50%{opacity:1;transform:scale(1.3)} }
