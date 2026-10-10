@@ -264,8 +264,8 @@ export default function Home() {
           <p className="decree">convidam vossa senhoria para uma noite medieval de banquete, lua e boas histórias.</p>
           <div className="date-lockup">
             <span>Sábado</span>
-            <strong>XVII · X · MMXXVI</strong>
-            <span>17 de outubro de 2026 · às {TIME}</span>
+            <strong>17 · 10 · 2026</strong>
+            <span>às {TIME}</span>
           </div>
           <div className="actions">
             <button className="btn btn-wine" onClick={saveCalendar}>＋ Salvar na agenda</button>
