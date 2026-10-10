@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Quill, Seal, Star } from "./Art";
+import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Seal, Star } from "./Art";
+import Seer from "./Seer";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
@@ -286,28 +287,9 @@ export default function Home() {
             </Parchment>
           </Reveal>
           <Reveal className="quill-wrap" delay={150}>
-            <Quill className="quill" />
+            <Seer className="seer-art" />
             <Candle className="candle c1" />
             <Candle className="candle c2" />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 6 · Lembretes */}
-      <section className="block" id="lembretes">
-        <div className="container narrow">
-          <Reveal>
-            <Parchment>
-              <p className="section-number">IV · Para não esquecer</p>
-              <h2>Até o <em>banquete</em>...</h2>
-              <Divider className="divider" />
-              <ol className="todo">
-                <li><b>I</b><span>Reservar sábado, 17 de outubro.</span></li>
-                <li><b>II</b><span>Confirmar presença ao reino.</span></li>
-                <li><b>III</b><span>Anotar o endereço: {VENUE.name}.</span></li>
-              </ol>
-              <p className="center"><em>O resto vem depois. Por enquanto, só guardai a data.</em></p>
-            </Parchment>
           </Reveal>
         </div>
       </section>
