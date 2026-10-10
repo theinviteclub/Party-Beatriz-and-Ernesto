@@ -339,8 +339,6 @@ export default function Home() {
           </Reveal>
           <Reveal className="quill-wrap" delay={150}>
             <Oracle />
-            <Candle className="candle c1" />
-            <Candle className="candle c2" />
           </Reveal>
         </div>
       </section>

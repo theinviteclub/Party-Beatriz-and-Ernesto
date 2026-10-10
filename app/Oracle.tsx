@@ -1,29 +1,21 @@
+import { Candle } from "./Art";
+
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const art = (name: string) => `${BASE_PATH}/arte/${name}.webp`;
 
 const CARDS = [
-  { src: "carta-lua", alt: "A Lua", delay: 0, tilt: -6 },
-  { src: "carta-estrela", alt: "A Estrela", delay: 2.2, tilt: 0 },
-  { src: "carta-sol", alt: "O Sol", delay: 4.4, tilt: 6 },
+  { src: "carta-lua", delay: 0, tilt: -7 },
+  { src: "carta-estrela", delay: 0.7, tilt: 1 },
+  { src: "carta-sol", delay: 1.4, tilt: 7 },
 ];
-/** Cartas de tarot clássicas que viram sozinhas e uma bola de cristal com luz e brilho. */
+
+/** Mesa de veludo: as cartas são lançadas, viram, e são recolhidas; a bola brilha com luzes ao redor. */
 export default function Oracle({ className = "" }: { className?: string }) {
   return (
-    <div className={`oracle ${className}`} role="img" aria-label="Cartas de tarot que viram e uma bola de cristal brilhando">
-      <div className="oracle-cards" aria-hidden="true">
-        {CARDS.map((c) => (
-          <div className="oc" key={c.src} style={{ ["--tilt" as string]: `${c.tilt}deg`, ["--d" as string]: `${c.delay}s` }}>
-            <div className="oc-float">
-              <div className="oc-inner">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="oc-face oc-back" src={art("carta-verso")} alt="" width={600} height={900} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="oc-face oc-front" src={art(c.src)} alt="" width={600} height={900} />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className={`oracle ${className}`} role="img" aria-label="Mesa de tarot com bola de cristal e cartas sendo lançadas">
+      <div className="o-table" aria-hidden="true" />
+      <Candle className="o-candle oc1" />
+      <Candle className="o-candle oc2" />
 
       <div className="ball" aria-hidden="true">
         <div className="ball-halo" />
@@ -44,6 +36,22 @@ export default function Oracle({ className = "" }: { className?: string }) {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="oracle-cards" aria-hidden="true">
+        {CARDS.map((c) => (
+          <div className="oc" key={c.src} style={{ ["--tilt" as string]: `${c.tilt}deg`, ["--d" as string]: `${c.delay}s` }}>
+            <div className="oc-slide">
+              <div className="oc-inner">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="oc-face oc-back" src={art("carta-verso")} alt="" width={600} height={900} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="oc-face oc-front" src={art(c.src)} alt="" width={600} height={900} />
+              </div>
+            </div>
+            <div className="oc-shadow" />
+          </div>
+        ))}
       </div>
     </div>
   );
