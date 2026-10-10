@@ -191,12 +191,62 @@ function RsvpForm() {
   );
 }
 
+
+/** Easter egg: tocar 3 vezes no brasão revela os cavaleiros do reino. */
+function KnightsModal({ onClose }: { onClose: () => void }) {
+  const [missing, setMissing] = useState(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose]);
+  return (
+    <div className="knights-backdrop" role="dialog" aria-modal="true" aria-label="Os cavaleiros do reino" onClick={onClose}>
+      <div className="knights-sheet" onClick={(e) => e.stopPropagation()}>
+        <Parchment>
+          <p className="section-number">Segredo do reino</p>
+          <h2>Os <em>cavaleiros</em> do reino</h2>
+          <Divider className="divider" />
+          {missing ? (
+            <p className="center">O retrato dos cavaleiros ainda está sendo pintado pelos artesãos do reino.</p>
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="knights-img" src={`${BASE_PATH}/arte/cavaleiros.webp`} alt="Beatriz e Ernesto como cavaleiros do reino" onError={() => setMissing(true)} />
+          )}
+          <p className="center knights-caption">Sir Ernesto e Lady Beatriz juram guardar a noite de 17 de outubro.</p>
+          <div className="actions">
+            <button className="btn btn-wine" onClick={onClose}>Fechar o pergaminho</button>
+          </div>
+        </Parchment>
+      </div>
+    </div>
+  );
+}
+
 const DATE_LONG = EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "America/Manaus" });
 
 export default function Home() {
+  const [knights, setKnights] = useState(false);
+  const taps = useRef({ n: 0, t: 0 });
+  function crestTap() {
+    const now = Date.now();
+    taps.current.n = now - taps.current.t < 900 ? taps.current.n + 1 : 1;
+    taps.current.t = now;
+    if (taps.current.n >= 3) {
+      taps.current.n = 0;
+      setKnights(true);
+    }
+  }
+
   return (
     <main>
       <Sky />
+      {knights && <KnightsModal onClose={() => setKnights(false)} />}
 
       {/* 1 · Capa */}
       <section className="hero" id="inicio">
@@ -242,7 +292,7 @@ export default function Home() {
             </Parchment>
           </Reveal>
           <Reveal className="crest-wrap" delay={150}>
-            <img className="crest" src={`${BASE_PATH}/arte/brasao.webp`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
+            <img className="crest" onClick={crestTap} src={`${BASE_PATH}/arte/brasao.webp`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
             <Star className="crest-star cs1" />
             <Star className="crest-star cs2" />
           </Reveal>
