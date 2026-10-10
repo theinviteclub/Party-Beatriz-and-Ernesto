@@ -110,8 +110,8 @@ main { position:relative; z-index:1; }
 /* selos */
 .seals { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; }
 .seal-card { text-align:center; background:linear-gradient(160deg,#1b1546,#2a0f3d); border:1.5px solid var(--gold-d); border-radius:12px; padding:30px 22px; color:var(--parch2); display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; }
-.seal { width:84px; height:84px; animation:pulse 3.6s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
+.seal { width:84px; height:84px; animation:sealPulse 3.6s ease-in-out infinite; }
+@keyframes sealPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
 .seal-card span { font-family:"Cinzel",serif; letter-spacing:.25em; text-transform:uppercase; font-size:.75rem; color:var(--gold); margin-top:8px; }
 .seal-card strong { font-family:"Uncial Antiqua",serif; font-weight:400; font-size:1.5rem; text-transform:capitalize; }
 .seal-card small { font-size:1.05rem; color:var(--gold-soft); }
@@ -172,12 +172,6 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
   .hs3 { display:none; }
   .parchment { clip-path:polygon(0% 1%,5% 0%,12% 1%,20% 0%,30% 1%,42% 0%,55% 1%,68% 0%,80% 1%,92% 0%,100% .6%,99.4% 20%,100% 40%,99.4% 60%,100% 80%,99.4% 99%,92% 100%,80% 99%,66% 100%,52% 99%,40% 100%,28% 99%,16% 100%,6% 99%,0% 99.5%,.6% 78%,0% 56%,.6% 34%,0% 14%); }
 }
-/* "Reduzir movimento" no celular desligava tudo; agora só os movimentos grandes ficam parados. */
-@media (prefers-reduced-motion:reduce) {
-  .hero-sheet,.hero-moon,.hero-cloud,.crest,.closing-moon,.closing-goblet,.scroll { animation:none !important; }
-  .rv-ready .rv { opacity:1; transform:none; transition:none; }
-  html { scroll-behavior:auto; }
-}
 @media (max-height:960px) { .scroll { display:none; } }
 
 /* vidente e cartas */
@@ -190,7 +184,7 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
 @keyframes cardBack { 0%,8%{transform:scaleX(1)} 14%,78%{transform:scaleX(0)} 84%,100%{transform:scaleX(1)} }
 @keyframes cardFront { 0%,8%{transform:scaleX(0)} 14%,78%{transform:scaleX(1)} 84%,100%{transform:scaleX(0)} }
 @keyframes cardFloat { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
-.seer-aura { animation:pulse 4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+.seer-aura { animation:sealPulse 4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
 .seer-body { animation:breathe 5s ease-in-out infinite; transform-box:fill-box; transform-origin:50% 100%; }
 @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.015) translateY(-2px)} }
 .seer-eyes { transform-box:fill-box; transform-origin:center; animation:blink 5s infinite; }
