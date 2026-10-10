@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Candle, Castle, Divider, Goblet, Moon, Seal, Star } from "./Art";
-import Seer from "./Seer";
+import Oracle from "./Oracle";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
@@ -214,8 +214,8 @@ export default function Home() {
           <p className="decree">convidam vossa senhoria para uma noite medieval de banquete, lua e boas histórias.</p>
           <div className="date-lockup">
             <span>Sábado</span>
-            <strong>17 · 10 · 2026</strong>
-            <span>às {TIME}</span>
+            <strong>XVII · X · MMXXVI</strong>
+            <span>17 de outubro de 2026 · às {TIME}</span>
           </div>
           <div className="actions">
             <button className="btn btn-wine" onClick={saveCalendar}>＋ Salvar na agenda</button>
@@ -242,7 +242,7 @@ export default function Home() {
             </Parchment>
           </Reveal>
           <Reveal className="crest-wrap" delay={150}>
-            <img className="crest" src={`${BASE_PATH}/arte/brasao.png`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
+            <img className="crest" src={`${BASE_PATH}/arte/brasao.webp`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
             <Star className="crest-star cs1" />
             <Star className="crest-star cs2" />
           </Reveal>
@@ -253,7 +253,7 @@ export default function Home() {
       <section className="block" id="detalhes">
         <div className="container">
           <Reveal className="title-center">
-            <p className="section-number light">II · Anotai</p>
+            <p className="section-number light">II · Do dia e do lugar</p>
             <h2 className="light">Vós estais <em>convidados</em></h2>
           </Reveal>
           <div className="seals">
@@ -288,7 +288,7 @@ export default function Home() {
             </Parchment>
           </Reveal>
           <Reveal className="quill-wrap" delay={150}>
-            <Seer className="seer-art" />
+            <Oracle />
             <Candle className="candle c1" />
             <Candle className="candle c2" />
           </Reveal>

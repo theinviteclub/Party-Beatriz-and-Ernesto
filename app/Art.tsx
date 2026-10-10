@@ -64,16 +64,15 @@ export function Goblet({ className, style }: P) {
   );
 }
 
+/** Vela pintada com castiçal; a chama é uma imagem separada para poder tremer. */
 export function Candle({ className, style }: P) {
   return (
-    <svg className={className} style={style} viewBox="0 0 40 110" aria-hidden="true">
-      <path className="flame" d="M20 2 C28 16 30 26 20 34 C10 26 12 16 20 2Z" fill="#ffd46b" />
-      <path className="flame" d="M20 14 C24 22 24 27 20 31 C16 27 16 22 20 14Z" fill="#fff4cf" />
-      <rect x="17" y="34" width="6" height="6" fill="#3a1420" />
-      <path d="M8 42 H32 V100 H8Z" fill="#efe0b4" stroke="#8a6a3a" strokeWidth="1.5" />
-      <path d="M8 42 C12 52 14 46 18 52 C22 46 26 56 32 44" fill="#f8f0d4" />
-      <rect x="4" y="100" width="32" height="8" rx="2" fill="#8a5f14" />
-    </svg>
+    <span className={`candle-art ${className ?? ""}`} style={style} aria-hidden="true">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="candle-flame" src={`${BASE_PATH}/arte/chama.webp`} alt="" width={300} height={745} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="candle-body" src={`${BASE_PATH}/arte/vela.webp`} alt="" width={283} height={900} />
+    </span>
   );
 }
 
