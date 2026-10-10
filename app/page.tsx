@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Quill, Ring, Seal, Star } from "./Art";
+import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Quill, Seal, Star } from "./Art";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
@@ -236,7 +236,6 @@ export default function Home() {
               <Divider className="divider" />
               <p>Por decreto do reino, {COUPLE.first} e {COUPLE.second} convidam vossa senhoria para uma noite medieval de banquete, lua cheia e céu estrelado.</p>
               <p>Boa companhia, boas histórias e mais um ano para celebrar.</p>
-              <p className="aside"><b>Não precisa usar fantasia.</b> A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
             </Parchment>
           </Reveal>
           <Reveal className="crest-wrap" delay={150}>
@@ -248,36 +247,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3 · Dress code */}
-      <section className="block" id="vestes">
-        <div className="container">
-          <Reveal>
-            <Parchment className="wide">
-              <p className="section-number">II · Das vestes</p>
-              <h2>Dress <em>code</em></h2>
-              <Divider className="divider" />
-              <p className="center">Não precisa usar fantasia. A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
-            </Parchment>
-          </Reveal>
-          <div className="cards">
-            <Reveal delay={0}>
-              <article className="card"><Crown className="card-art" /><h3>Veludo e brocado</h3><p>Tons de vinho, azul-noite, dourado e verde-musgo combinam com a noite.</p></article>
-            </Reveal>
-            <Reveal delay={120}>
-              <article className="card"><Ring className="card-art" /><h3>Pequenos detalhes</h3><p>Uma coroa, uma capa, um anel ou um broche já contam. Fantasia completa é opcional.</p></article>
-            </Reveal>
-            <Reveal delay={240}>
-              <article className="card"><Goblet className="card-art" /><h3>Do jeito que ficar bem</h3><p>Conforto em primeiro lugar: o importante é aparecer e brindar.</p></article>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* 4 · Detalhes */}
       <section className="block" id="detalhes">
         <div className="container">
           <Reveal className="title-center">
-            <p className="section-number light">III · Anotai</p>
+            <p className="section-number light">II · Anotai</p>
             <h2 className="light">Vós estais <em>convidados</em></h2>
           </Reveal>
           <div className="seals">
@@ -304,7 +278,7 @@ export default function Home() {
         <div className="container two-col rsvp-grid">
           <Reveal>
             <Parchment>
-              <p className="section-number">IV · Resposta ao reino</p>
+              <p className="section-number">III · Resposta ao reino</p>
               <h2>Vós vindes ao <em>banquete</em>?</h2>
               <Divider className="divider" />
               <p>Enviai vosso nome para que seja incluído na lista e dizei se levais alguém convosco.</p>
@@ -324,14 +298,13 @@ export default function Home() {
         <div className="container narrow">
           <Reveal>
             <Parchment>
-              <p className="section-number">V · Para não esquecer</p>
+              <p className="section-number">IV · Para não esquecer</p>
               <h2>Até o <em>banquete</em>...</h2>
               <Divider className="divider" />
               <ol className="todo">
                 <li><b>I</b><span>Reservar sábado, 17 de outubro.</span></li>
-                <li><b>II</b><span>Separar um detalhe medieval (se quiser).</span></li>
-                <li><b>III</b><span>Confirmar presença ao reino.</span></li>
-                <li><b>IV</b><span>Anotar o endereço: {VENUE.name}.</span></li>
+                <li><b>II</b><span>Confirmar presença ao reino.</span></li>
+                <li><b>III</b><span>Anotar o endereço: {VENUE.name}.</span></li>
               </ol>
               <p className="center"><em>O resto vem depois. Por enquanto, só guardai a data.</em></p>
             </Parchment>
