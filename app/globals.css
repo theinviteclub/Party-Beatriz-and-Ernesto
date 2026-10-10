@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@400;500;700&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&display=swap');
 @import "tailwindcss";
 
 :root { --night:#0b1030; --blue:#14215a; --plum:#2a0f3d; --wine:#6b1a2b; --gold:#d9a441; --gold-soft:#f0cf86; --cream:#f3e6c8; --ink:#1a1230; }
@@ -160,3 +160,53 @@ footer { background:#070a20; color:var(--gold-soft); padding:22px clamp(20px,6vw
 .options a { color:var(--gold); border:1px solid var(--gold); border-radius:999px; padding:14px 28px; text-decoration:none; font-family:"Cinzel",serif; }
 /* a imagem da nuvem é cortada reta na lateral esquerda; esmaece essa borda para não aparecer emenda */
 .portrait .cloud { -webkit-mask-image:linear-gradient(to right,transparent 0,#000 38%); mask-image:linear-gradient(to right,transparent 0,#000 38%); }
+
+/* capas medievais */
+.options h2 { font-family:"Cinzel",serif; color:var(--gold-soft); font-size:1rem; letter-spacing:.2em; text-transform:uppercase; margin-top:12px; }
+.m-portrait { --parch:#e9d8ae; --ink:#3a1420; position:relative; overflow:hidden; width:min(100%,500px); height:min(100svh,920px); min-height:660px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; font-family:"IM Fell English",serif; color:var(--ink); }
+@media (min-width:600px) { .m-portrait { border-radius:20px; } }
+.m-copy { position:relative; z-index:2; padding:0 13%; display:flex; flex-direction:column; align-items:center; }
+.m-eyebrow { font-family:"Uncial Antiqua",serif; font-size:1rem; letter-spacing:.12em; margin:0 0 .6em; }
+.m-copy h1 { font-family:"Uncial Antiqua",serif; font-weight:400; font-size:clamp(2.4rem,11vw,4.2rem); line-height:1.05; display:flex; flex-direction:column; align-items:center; }
+.m-copy h1 em { font-size:.55em; color:#9a6a1a; }
+.m-flourish { letter-spacing:.4em; color:#9a6a1a; margin:.6em 0; }
+.m-decree { font-size:1.2rem; line-height:1.35; font-style:italic; margin:0 0 1em; }
+.m-date { display:flex; flex-direction:column; border-block:1px solid currentColor; padding:8px 28px; margin-bottom:1em; }
+.m-date span { font-family:"Uncial Antiqua",serif; letter-spacing:.15em; font-size:.95rem; }
+.m-date strong { font-family:"Cinzel",serif; font-size:1.5rem; }
+.m-note { font-size:.95rem; line-height:1.35; opacity:.85; max-width:28ch; }
+.m-scroll { position:absolute; bottom:18px; z-index:3; font-size:.85rem; color:inherit; text-decoration:none; font-style:italic; }
+.m-corner { position:absolute; z-index:3; font-size:1.8rem; color:#9a6a1a; }
+.m-corner.tl { top:14px; left:16px; } .m-corner.tr { top:14px; right:16px; transform:scaleX(-1); }
+.m-corner.bl { bottom:14px; left:16px; transform:scaleY(-1); } .m-corner.br { bottom:14px; right:16px; transform:scale(-1); }
+.m-art { position:absolute; z-index:1; display:grid; place-items:center; text-align:center; border:1.5px dashed #9a6a1a99; color:#9a6a1a; font-family:"DM Sans",sans-serif; font-size:.65rem; letter-spacing:.14em; text-transform:uppercase; background:#9a6a1a14; padding:6px; }
+.m-art-top { top:42px; left:14%; right:14%; height:15%; }
+.m-art-left { top:0; bottom:0; left:0; width:12%; border-style:dashed; }
+.m-art-right { top:0; bottom:0; right:0; width:12%; }
+.m-art-initial { top:44px; left:12%; width:26%; aspect-ratio:1; }
+.m-art-crest { top:44px; left:50%; transform:translateX(-50%); width:34%; aspect-ratio:3/4; }
+
+/* e · pergaminho sobre azul-noite */
+.m-e { background:radial-gradient(circle at 50% 30%,#1b2860,#0b1030 70%); }
+.m-e::before { content:""; position:absolute; inset:34px 18px; background:radial-gradient(circle at 50% 40%,#f2e4bd,var(--parch) 60%,#cfb37c); border:3px double #9a6a1a; border-radius:14px; box-shadow:0 0 40px #0008; }
+.m-e .m-copy { margin-top:18%; }
+/* f · tapeçaria: cortinas de veludo e faixa de pergaminho */
+.m-f { background:radial-gradient(circle at 50% 30%,#1b2860,#070a20 75%); color:var(--cream); }
+.m-f::before,.m-f::after { content:""; position:absolute; top:0; bottom:0; width:13%; background:linear-gradient(90deg,#3a0b16,#7a1a2e 55%,#3a0b16); box-shadow:0 0 30px #000a; }
+.m-f::before { left:0; } .m-f::after { right:0; }
+.m-f .m-art { z-index:2; }
+.m-f .m-copy { background:radial-gradient(circle at 50% 50%,#f2e4bd,var(--parch) 65%,#cfb37c); color:var(--ink); border:3px double #9a6a1a; border-radius:18px; padding:30px 8%; margin:0 15%; box-shadow:0 0 40px #000a; }
+.m-f .m-scroll { color:var(--gold-soft); }
+.m-f .m-corner { color:var(--gold); }
+/* g · manuscrito iluminado */
+.m-g { background:radial-gradient(circle at 50% 40%,#f2e4bd,var(--parch) 65%,#c9aa70); box-shadow:inset 0 0 70px #7a5a2a88; }
+.m-g .m-copy { align-items:flex-start; text-align:left; margin-top:16%; padding:0 12%; }
+.m-g .m-copy h1 { align-items:flex-start; }
+.m-g .m-flourish { align-self:center; }
+.m-g .m-date { align-self:center; }
+/* h · brasão heráldico */
+.m-h { background:linear-gradient(180deg,#2a0f3d,#0b1030 80%); color:var(--cream); }
+.m-h::before { content:""; position:absolute; inset:16px; border:2px solid var(--gold); border-radius:12px; }
+.m-h .m-copy { margin-top:30%; }
+.m-h .m-art { border-color:var(--gold); color:var(--gold); }
+.m-h .m-copy h1 em,.m-h .m-flourish,.m-h .m-corner { color:var(--gold); }

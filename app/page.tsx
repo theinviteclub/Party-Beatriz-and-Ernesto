@@ -57,7 +57,7 @@ function ics(date: Date) {
     `DTSTART:${f(date)}`, `DTEND:${f(new Date(date.getTime() + 5 * 3600000))}`,
     "SUMMARY:Festa de Beatriz e Ernesto",
     `LOCATION:${VENUE.name} - ${VENUE.address}`.replace(/,/g, "\\,"),
-    `DESCRIPTION:Halloween\\, lua\\, tarot e estrelas. Horário: ${TIME}.`,
+    `DESCRIPTION:Noite medieval\\, lua e estrelas. Horário: ${TIME}.`,
     "END:VEVENT", "END:VCALENDAR",
   ].join("\r\n");
 }
@@ -125,7 +125,7 @@ function RsvpForm() {
     return (
       <div className="rsvp-card rsvp-sent">
         <p>✦ Resposta enviada!</p>
-        <h3>{attending === "yes" ? "Te esperamos na noite das estrelas!" : attending === "maybe" ? "Vamos torcer pelas cartas!" : "Que pena, você vai fazer falta!"}</h3>
+        <h3>{attending === "yes" ? "Vossa presença será celebrada no banquete!" : attending === "maybe" ? "O reino aguardará com esperança!" : "Que pena, fareis falta ao banquete!"}</h3>
       </div>
     );
   }
@@ -191,7 +191,7 @@ export default function Home() {
     <main>
       <Hero variant="a" dateLabel="Sáb · 17.10.2026" time={TIME} />
 
-      <section className="ticker" aria-hidden="true"><div>✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS ✦ HALLOWEEN ✦ LUA ✦ TAROT ✦ ESTRELAS</div></section>
+      <section className="ticker" aria-hidden="true"><div>✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS</div></section>
 
       <section className="intro section" id="tema">
         <div className="section-number">01 / O TEMA</div>
@@ -199,9 +199,9 @@ export default function Home() {
           <div className="intro-copy">
             <h2>Venha <em>celebrar</em> com a gente!</h2>
             <div className="body-copy">
-              <p>{COUPLE.first} e {COUPLE.second} estão preparando uma noite feita de Halloween, lua cheia, cartas de tarot e céu estrelado.</p>
-              <p>Você faz parte dessa história, então não podia ficar de fora.</p>
-              <p>Venha com uma <b>carta</b> na manga: vista-se de bruxa, de lua, de estrela, de gato preto ou da sua carta de tarot favorita.</p>
+              <p>Por decreto do reino, {COUPLE.first} e {COUPLE.second} convidam vossa senhoria para uma noite medieval de banquete, lua cheia e céu estrelado.</p>
+              <p>Boa companhia, boas histórias e mais um ano para celebrar.</p>
+              <p><b>Não precisa usar fantasia.</b> A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
             </div>
           </div>
           <div className="slot slot-tall" data-slot="intro">imagem do tema</div>
@@ -212,32 +212,32 @@ export default function Home() {
         <div className="section-number light">02 / DICAS</div>
         <div className="dress-heading">
           <h2>Anota essas <span>dicas</span></h2>
-          <p>Escolha sua carta e entre no clima</p>
+          <p>Para quem quiser entrar no clima</p>
         </div>
         <div className="tips-grid">
           <article className="tip-card">
-            <span>Tarot</span>
-            <p>Vá de O Sol, A Lua, A Estrela, A Sacerdotisa... ou qualquer carta que combine com você.</p>
+            <span>Veludo e brocado</span>
+            <p>Tons de vinho, azul-noite, dourado e verde-musgo combinam com a noite.</p>
           </article>
           <article className="tip-card">
-            <span>Bruxaria</span>
-            <p>Chapéu de bruxa, capa, gato preto: tudo bem-vindo.</p>
+            <span>Pequenos detalhes</span>
+            <p>Uma coroa, uma capa, um anel ou um broche já contam. Fantasia completa é opcional.</p>
           </article>
           <article className="tip-card">
-            <span>Céu estrelado</span>
-            <p>Brilho, dourado e azul-noite deixam a festa ainda mais mágica.</p>
+            <span>Do jeito que ficar bem</span>
+            <p>Conforto em primeiro lugar: o importante é aparecer.</p>
           </article>
           <article className="tip-card tip-card-note">
             <span>Sobre o local</span>
             <p>{VENUE.name}, no Parque 10 de Novembro.</p>
           </article>
         </div>
-        <p className="only-rule">A única regra é <em>entrar no clima!</em></p>
+        <p className="only-rule">A única regra é <em>vir se divertir!</em></p>
       </section>
 
       <section className="details section" id="detalhes">
         <div className="section-number">03 / ANOTE AÍ</div>
-        <div className="details-title"><p>uma noite para celebrar</p><h2>{COUPLE.first}<br /><em>&</em><br />{COUPLE.second}</h2></div>
+        <div className="details-title"><p>vós estais convidados</p><h2>{COUPLE.first}<br /><em>&</em><br />{COUPLE.second}</h2></div>
         <div className="detail-cards">
           <article><span>Data</span><strong>{EVENT_DATE ? EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : dateLabel}</strong></article>
           <article><span>Horário</span><strong>{TIME}</strong></article>
@@ -273,26 +273,26 @@ export default function Home() {
       <section className="mission section">
         <div className="mission-card">
           <p className="section-number light">06 / PRA NÃO ESQUECER</p>
-          <h2>Até a festa...</h2>
+          <h2>Até o banquete...</h2>
           <ol>
             <li><b>01</b><span>Reservar a data.</span><i>○</i></li>
-            <li><b>02</b><span>Escolher sua carta ou fantasia.</span><i>○</i></li>
-            <li><b>03</b><span>Confirmar presença.</span><i>○</i></li>
+            <li><b>02</b><span>Separar um detalhe medieval (se quiser).</span><i>○</i></li>
+            <li><b>03</b><span>Confirmar presença ao reino.</span><i>○</i></li>
             <li><b>04</b><span>Anotar o endereço: {VENUE.name}.</span><i>○</i></li>
           </ol>
-          <p className="mission-foot">O resto vem depois —<br /><em>por enquanto, só escolha sua carta.</em></p>
+          <p className="mission-foot">O resto vem depois —<br /><em>por enquanto, só guarde a data.</em></p>
         </div>
       </section>
 
       <section className="closing section">
         <Stars count={20} />
         <p className="closing-top">{COUPLE.first} & {COUPLE.second} —</p>
-        <h2>vem <em>brilhar</em><br />com a gente?</h2>
+        <h2>vós vindes ao <em>banquete</em>?</h2>
         <div className="actions centered">
           {EVENT_DATE && <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>}
           <a className="button ghost" href="#presenca">Confirmar presença ☾</a>
         </div>
-        <p className="last-line">As estrelas já sabem: você não pode faltar.</p>
+        <p className="last-line">Boa companhia, boas histórias e mais um ano para celebrar.</p>
       </section>
       <footer>
         <div className="footer-row">

@@ -7,17 +7,17 @@ const SITE_URL = "https://theinviteclub.github.io" + BASE_PATH + "/";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Save the Date · Beatriz & Ernesto",
-  description: "Beatriz e Ernesto te convidam para uma noite de Halloween, lua, tarot e estrelas. 19h30, Velho Monge.",
+  description: "Beatriz e Ernesto te convidam para uma noite medieval de banquete, lua e estrelas. 19h30, Velho Monge.",
   icons: { icon: `${BASE_PATH}/favicon.svg` },
   openGraph: {
     title: "Save the Date · Beatriz & Ernesto",
-    description: "Uma noite de Halloween, lua, tarot e estrelas. Separe a data!",
+    description: "Por decreto do reino: uma noite medieval de banquete, lua e estrelas. Separe a data!",
     url: SITE_URL,
   },
   twitter: {
     card: "summary",
     title: "Save the Date · Beatriz & Ernesto",
-    description: "Uma noite de Halloween, lua, tarot e estrelas. Separe a data!",
+    description: "Por decreto do reino: uma noite medieval de banquete, lua e estrelas. Separe a data!",
   },
 };
 
