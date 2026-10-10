@@ -94,7 +94,7 @@ main { position:relative; z-index:1; }
 
 /* brasão */
 .crest-wrap { position:relative; display:grid; place-items:center; }
-.crest { width:min(70%,300px); filter:drop-shadow(0 10px 20px #000a); animation:floaty 8s ease-in-out infinite; }
+.crest { width:min(78%,380px); height:auto; filter:drop-shadow(0 10px 20px #000a); animation:floaty 8s ease-in-out infinite; }
 .crest-crown { position:absolute; width:90px; top:-4%; left:50%; translate:-50% 0; }
 .crest-star { position:absolute; animation:spinGlow 8s ease-in-out infinite; }
 .cs1 { width:44px; left:6%; top:20%; } .cs2 { width:30px; right:8%; bottom:14%; animation-delay:-4s; }

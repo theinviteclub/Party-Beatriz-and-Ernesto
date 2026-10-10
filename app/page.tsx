@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Seal, Star } from "./Art";
+import { Candle, Castle, Divider, Goblet, Moon, Seal, Star } from "./Art";
 import Seer from "./Seer";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -242,8 +242,7 @@ export default function Home() {
             </Parchment>
           </Reveal>
           <Reveal className="crest-wrap" delay={150}>
-            <Crest className="crest" />
-            <Crown className="crest-crown" />
+            <img className="crest" src={`${BASE_PATH}/arte/brasao.png`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
             <Star className="crest-star cs1" />
             <Star className="crest-star cs2" />
           </Reveal>
