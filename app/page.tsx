@@ -304,8 +304,8 @@ export default function Home() {
         <Reveal className="closing-copy">
           <Goblet className="closing-goblet" />
           <p className="eyebrow light">{COUPLE.first} &amp; {COUPLE.second}</p>
-          <h2 className="light">Vós vindes ao <em>banquete</em>?</h2>
-          <p className="light-note">Boa companhia, boas histórias e mais um ano para celebrar.</p>
+          <h2 className="light">Mais um ano em volta do <em>sol</em></h2>
+          <p className="light-note">Venha brindar com a gente mais uma volta ao redor do sol.</p>
           <div className="actions center-actions">
             <button className="btn btn-gold" onClick={saveCalendar}>＋ Salvar na agenda</button>
             <a className="btn btn-ghost-light" href="#presenca">Confirmar presença</a>

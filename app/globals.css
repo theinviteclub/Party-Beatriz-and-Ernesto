@@ -178,7 +178,6 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
   .rv-ready .rv { opacity:1; transform:none; transition:none; }
   html { scroll-behavior:auto; }
 }
-}
 @media (max-height:960px) { .scroll { display:none; } }
 
 /* vidente e cartas */
