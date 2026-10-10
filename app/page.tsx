@@ -1,45 +1,80 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Hero from "./Hero";
+import { useEffect, useRef, useState } from "react";
+import { Candle, Castle, Crest, Crown, Divider, Goblet, Moon, Quill, Ring, Seal, Star } from "./Art";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
 const TIME = "19h30";
 const VENUE = { name: "Velho Monge", address: "R. Feira de Santana, 17 - Parque 10 de Novembro" };
-const EVENT_DATE: Date | null = new Date("2026-10-17T19:30:00-04:00");
+const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${VENUE.name} ${VENUE.address} Manaus`);
+const EVENT_DATE = new Date("2026-10-17T19:30:00-04:00");
 // TODO: trocar pelo formulário do casal (https://formspree.io/f/xxxx). Vazio = formulário desativado.
 const FORMSPREE_ENDPOINT = "";
-
-const MOOD_SLOTS = 8;
 
 function pad(value: number) {
   return String(Math.max(0, value)).padStart(2, "0");
 }
 
+/** Revela o conteúdo quando entra na tela. */
+function Reveal({ children, className = "", delay = 0, as: Tag = "div" }: { children: React.ReactNode; className?: string; delay?: number; as?: "div" | "section" | "li" | "article" }) {
+  const ref = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    document.body.classList.add("rv-ready");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target))),
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    // @ts-expect-error ref genérico para tags variáveis
+    <Tag ref={ref} className={`rv ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </Tag>
+  );
+}
+
+/** Folha de pergaminho com borda rasgada. */
+function Parchment({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`sheet ${className}`}>
+      <div className="parchment">{children}</div>
+    </div>
+  );
+}
+
+function Sky() {
+  return (
+    <div className="sky" aria-hidden="true">
+      {Array.from({ length: 46 }, (_, i) => (
+        <i key={i} style={{ left: `${(i * 37 + 11) % 100}%`, top: `${(i * 53 + 7) % 100}%`, animationDelay: `${-(i % 9) * 0.6}s`, scale: String(0.5 + (i % 5) * 0.3) }} />
+      ))}
+    </div>
+  );
+}
+
 function Countdown({ date }: { date: Date }) {
   const [remaining, setRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
   useEffect(() => {
     const update = () => {
-      const difference = Math.max(0, date.getTime() - Date.now());
-      setRemaining({
-        days: Math.floor(difference / 86400000),
-        hours: Math.floor((difference / 3600000) % 24),
-        minutes: Math.floor((difference / 60000) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      });
+      const d = Math.max(0, date.getTime() - Date.now());
+      setRemaining({ days: Math.floor(d / 86400000), hours: Math.floor((d / 3600000) % 24), minutes: Math.floor((d / 60000) % 60), seconds: Math.floor((d / 1000) % 60) });
     };
     update();
-    const timer = window.setInterval(update, 1000);
-    return () => window.clearInterval(timer);
+    const t = window.setInterval(update, 1000);
+    return () => window.clearInterval(t);
   }, [date]);
-
+  const labels: Record<string, string> = { days: "dias", hours: "horas", minutes: "min", seconds: "seg" };
   return (
-    <div className="countdown" aria-label="Contagem regressiva para a festa">
+    <div className="countdown" aria-label="Contagem regressiva para o banquete">
       {Object.entries(remaining).map(([key, value]) => (
         <div className="countdown-item" key={key}>
           <strong>{key === "days" ? value : pad(value)}</strong>
-          <span>{({ days: "dias", hours: "horas", minutes: "min", seconds: "seg" } as Record<string, string>)[key]}</span>
+          <span>{labels[key]}</span>
         </div>
       ))}
     </div>
@@ -53,17 +88,16 @@ function ics(date: Date) {
   };
   return [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Beatriz e Ernesto//Save the Date//PT-BR",
-    "BEGIN:VEVENT", "UID:beatriz-ernesto-halloween@save-the-date", `DTSTAMP:${f(new Date())}`,
+    "BEGIN:VEVENT", "UID:beatriz-ernesto-medieval@save-the-date", `DTSTAMP:${f(new Date())}`,
     `DTSTART:${f(date)}`, `DTEND:${f(new Date(date.getTime() + 5 * 3600000))}`,
-    "SUMMARY:Festa de Beatriz e Ernesto",
+    "SUMMARY:Banquete de Beatriz e Ernesto",
     `LOCATION:${VENUE.name} - ${VENUE.address}`.replace(/,/g, "\\,"),
-    `DESCRIPTION:Noite medieval\\, lua e estrelas. Horário: ${TIME}.`,
+    `DESCRIPTION:Por decreto do reino\\, uma noite medieval de banquete\\, lua e boas histórias. Horário: ${TIME}.`,
     "END:VEVENT", "END:VCALENDAR",
   ].join("\r\n");
 }
 
 function saveCalendar() {
-  if (!EVENT_DATE) return;
   const url = URL.createObjectURL(new Blob([ics(EVENT_DATE)], { type: "text/calendar;charset=utf-8" }));
   const link = document.createElement("a");
   link.href = url;
@@ -84,18 +118,6 @@ function RsvpForm() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [status, setStatus] = useState<RsvpStatus>("idle");
 
-  function addGuest() {
-    setGuests((current) => [...current, { name: "" }]);
-  }
-
-  function updateGuest(index: number, value: string) {
-    setGuests((current) => current.map((guest, i) => (i === index ? { name: value } : guest)));
-  }
-
-  function removeGuest(index: number) {
-    setGuests((current) => current.filter((_, i) => i !== index));
-  }
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!attending || !name.trim()) return;
@@ -103,7 +125,6 @@ function RsvpForm() {
       setStatus("error");
       return;
     }
-
     setStatus("sending");
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
@@ -123,182 +144,222 @@ function RsvpForm() {
 
   if (status === "sent") {
     return (
-      <div className="rsvp-card rsvp-sent">
-        <p>✦ Resposta enviada!</p>
+      <div className="rsvp-sent">
+        <p>✦ Resposta enviada ao reino!</p>
         <h3>{attending === "yes" ? "Vossa presença será celebrada no banquete!" : attending === "maybe" ? "O reino aguardará com esperança!" : "Que pena, fareis falta ao banquete!"}</h3>
       </div>
     );
   }
 
   return (
-    <form className="rsvp-card" onSubmit={handleSubmit}>
+    <form className="rsvp-form" onSubmit={handleSubmit}>
       <div className="rsvp-toggle">
         <button type="button" className={attending === "yes" ? "is-active" : ""} onClick={() => setAttending("yes")}>Eu vou ✦</button>
         <button type="button" className={attending === "maybe" ? "is-active" : ""} onClick={() => setAttending("maybe")}>Talvez</button>
         <button type="button" className={attending === "no" ? "is-active" : ""} onClick={() => setAttending("no")}>Não vou poder</button>
       </div>
-
       {attending && (
         <div className="rsvp-fields">
           <label>
-            Seu nome
-            <input required value={name} onChange={(event) => setName(event.target.value)} placeholder="Como você se chama?" />
+            Vosso nome
+            <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Como vos chamais?" />
           </label>
-
-          {(attending === "yes" || attending === "maybe") && (
+          {attending !== "no" && (
             <div className="rsvp-guests">
-              <span>Vai levar acompanhante?</span>
+              <span>Levareis acompanhante?</span>
               {guests.map((guest, index) => (
                 <div className="rsvp-guest-row" key={index}>
                   <input
                     value={guest.name}
-                    onChange={(event) => updateGuest(index, event.target.value)}
+                    onChange={(e) => setGuests((c) => c.map((g, i) => (i === index ? { name: e.target.value } : g)))}
                     placeholder={`Nome do acompanhante ${index + 1}`}
                   />
-                  <button type="button" onClick={() => removeGuest(index)} aria-label="Remover acompanhante">✕</button>
+                  <button type="button" onClick={() => setGuests((c) => c.filter((_, i) => i !== index))} aria-label="Remover acompanhante">✕</button>
                 </div>
               ))}
-              <button type="button" className="rsvp-add" onClick={addGuest}>＋ Adicionar acompanhante</button>
+              <button type="button" className="rsvp-add" onClick={() => setGuests((c) => [...c, { name: "" }])}>＋ Adicionar acompanhante</button>
             </div>
           )}
-
-          <button type="submit" className="button primary" disabled={status === "sending"}>
-            {status === "sending" ? "Enviando..." : "Confirmar resposta"}
-          </button>
-          {status === "error" && (
-            <p className="rsvp-error">
-              {FORMSPREE_ENDPOINT ? "Não consegui enviar. Tenta de novo em instantes." : "O formulário ainda não está ativo."}
-            </p>
-          )}
+          <button type="submit" className="btn btn-wine" disabled={status === "sending"}>{status === "sending" ? "Enviando..." : "Confirmar resposta"}</button>
+          {status === "error" && <p className="rsvp-error">{FORMSPREE_ENDPOINT ? "Não consegui enviar. Tenta de novo em instantes." : "O formulário ainda não está ativo."}</p>}
         </div>
       )}
     </form>
   );
 }
 
-function Stars({ count }: { count: number }) {
-  return (
-    <div className="stars" aria-hidden="true">
-      {Array.from({ length: count }, (_, index) => <i key={index} style={{ left: `${(index * 37) % 100}%`, top: `${(index * 53) % 100}%`, animationDelay: `${-index * 0.4}s`, scale: 0.6 + (index % 4) * 0.5 }} />)}
-    </div>
-  );
-}
+const DATE_LONG = EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "America/Manaus" });
 
 export default function Home() {
-  const dateLabel = EVENT_DATE ? "Data" : "Data em breve";
-
   return (
     <main>
-      <Hero variant="a" dateLabel="Sáb · 17.10.2026" time={TIME} />
+      <Sky />
 
-      <section className="ticker" aria-hidden="true"><div>✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS</div></section>
+      {/* 1 · Capa */}
+      <section className="hero" id="inicio">
+        <Moon className="hero-moon" />
+        <Star className="hero-star hs1" />
+        <Star className="hero-star hs2" />
+        <Star className="hero-star hs3" />
+        <img className="hero-cloud hc-l" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
+        <img className="hero-cloud hc-r" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
+        <Castle className="hero-castle" />
+        <Parchment className="hero-sheet">
+          <p className="eyebrow">Por decreto do reino</p>
+          <h1><span>{COUPLE.first}</span><em>&amp;</em><span>{COUPLE.second}</span></h1>
+          <Divider className="divider" />
+          <p className="decree">convidam vossa senhoria para uma noite medieval de banquete, lua e boas histórias.</p>
+          <div className="date-lockup">
+            <span>Sábado</span>
+            <strong>17 · 10 · 2026</strong>
+            <span>às {TIME}</span>
+          </div>
+          <div className="actions">
+            <button className="btn btn-wine" onClick={saveCalendar}>＋ Salvar na agenda</button>
+            <a className="btn btn-ghost" href="#presenca">Confirmar presença</a>
+          </div>
+        </Parchment>
+        <a className="scroll" href="#decreto">deslizai para ler o decreto ↓</a>
+      </section>
 
-      <section className="intro section" id="tema">
-        <div className="section-number">01 / O TEMA</div>
-        <div className="intro-grid">
-          <div className="intro-copy">
-            <h2>Venha <em>celebrar</em> com a gente!</h2>
-            <div className="body-copy">
+      <div className="ribbon" aria-hidden="true">
+        <div>✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦ POR DECRETO DO REINO ✦ BANQUETE ✦ LUA ✦ ESTRELAS ✦ BOAS HISTÓRIAS ✦</div>
+      </div>
+
+      {/* 2 · O decreto */}
+      <section className="block" id="decreto">
+        <div className="container two-col">
+          <Reveal>
+            <Parchment>
+              <p className="section-number">I · O decreto</p>
+              <h2>Vinde <em>celebrar</em> conosco</h2>
+              <Divider className="divider" />
               <p>Por decreto do reino, {COUPLE.first} e {COUPLE.second} convidam vossa senhoria para uma noite medieval de banquete, lua cheia e céu estrelado.</p>
               <p>Boa companhia, boas histórias e mais um ano para celebrar.</p>
-              <p><b>Não precisa usar fantasia.</b> A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
-            </div>
+              <p className="aside"><b>Não precisa usar fantasia.</b> A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
+            </Parchment>
+          </Reveal>
+          <Reveal className="crest-wrap" delay={150}>
+            <Crest className="crest" />
+            <Crown className="crest-crown" />
+            <Star className="crest-star cs1" />
+            <Star className="crest-star cs2" />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 3 · Dress code */}
+      <section className="block" id="vestes">
+        <div className="container">
+          <Reveal>
+            <Parchment className="wide">
+              <p className="section-number">II · Das vestes</p>
+              <h2>Dress <em>code</em></h2>
+              <Divider className="divider" />
+              <p className="center">Não precisa usar fantasia. A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
+            </Parchment>
+          </Reveal>
+          <div className="cards">
+            <Reveal delay={0}>
+              <article className="card"><Crown className="card-art" /><h3>Veludo e brocado</h3><p>Tons de vinho, azul-noite, dourado e verde-musgo combinam com a noite.</p></article>
+            </Reveal>
+            <Reveal delay={120}>
+              <article className="card"><Ring className="card-art" /><h3>Pequenos detalhes</h3><p>Uma coroa, uma capa, um anel ou um broche já contam. Fantasia completa é opcional.</p></article>
+            </Reveal>
+            <Reveal delay={240}>
+              <article className="card"><Goblet className="card-art" /><h3>Do jeito que ficar bem</h3><p>Conforto em primeiro lugar: o importante é aparecer e brindar.</p></article>
+            </Reveal>
           </div>
-          <div className="slot slot-tall" data-slot="intro">imagem do tema</div>
         </div>
       </section>
 
-      <section className="dress section">
-        <div className="section-number light">02 / DICAS</div>
-        <div className="dress-heading">
-          <h2>Anota essas <span>dicas</span></h2>
-          <p>Para quem quiser entrar no clima</p>
-        </div>
-        <div className="tips-grid">
-          <article className="tip-card">
-            <span>Veludo e brocado</span>
-            <p>Tons de vinho, azul-noite, dourado e verde-musgo combinam com a noite.</p>
-          </article>
-          <article className="tip-card">
-            <span>Pequenos detalhes</span>
-            <p>Uma coroa, uma capa, um anel ou um broche já contam. Fantasia completa é opcional.</p>
-          </article>
-          <article className="tip-card">
-            <span>Do jeito que ficar bem</span>
-            <p>Conforto em primeiro lugar: o importante é aparecer.</p>
-          </article>
-          <article className="tip-card tip-card-note">
-            <span>Sobre o local</span>
-            <p>{VENUE.name}, no Parque 10 de Novembro.</p>
-          </article>
-        </div>
-        <p className="only-rule">A única regra é <em>vir se divertir!</em></p>
-      </section>
-
-      <section className="details section" id="detalhes">
-        <div className="section-number">03 / ANOTE AÍ</div>
-        <div className="details-title"><p>vós estais convidados</p><h2>{COUPLE.first}<br /><em>&</em><br />{COUPLE.second}</h2></div>
-        <div className="detail-cards">
-          <article><span>Data</span><strong>{EVENT_DATE ? EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : dateLabel}</strong></article>
-          <article><span>Horário</span><strong>{TIME}</strong></article>
-          <article><span>Local</span><strong>{VENUE.name}</strong><small>{VENUE.address}</small></article>
-        </div>
-        {EVENT_DATE && <Countdown date={EVENT_DATE} />}
-      </section>
-
-      <section className="rsvp section" id="presenca">
-        <div className="section-number">04 / VOCÊ VAI?</div>
-        <div className="rsvp-heading">
-          <h2>Confirme sua<br /><em>presença</em></h2>
-          <p>Conte pra gente se você vem e se leva alguém junto.</p>
-        </div>
-        <div className="rsvp-form-wrap">
-          <RsvpForm />
+      {/* 4 · Detalhes */}
+      <section className="block" id="detalhes">
+        <div className="container">
+          <Reveal className="title-center">
+            <p className="section-number light">III · Anotai</p>
+            <h2 className="light">Vós estais <em>convidados</em></h2>
+          </Reveal>
+          <div className="seals">
+            <Reveal><article className="seal-card">
+              <Seal className="seal"><text x="50" y="62" textAnchor="middle" fontSize="38" fill="#e8c46a" fontFamily="Uncial Antiqua, serif">17</text></Seal>
+              <span>Data</span><strong>{DATE_LONG}</strong>
+            </article></Reveal>
+            <Reveal delay={120}><article className="seal-card">
+              <Seal className="seal"><circle cx="50" cy="50" r="20" fill="none" stroke="#e8c46a" strokeWidth="3" /><path d="M50 36 V50 L60 56" stroke="#e8c46a" strokeWidth="3" fill="none" strokeLinecap="round" /></Seal>
+              <span>Horário</span><strong>{TIME}</strong>
+            </article></Reveal>
+            <Reveal delay={240}><article className="seal-card">
+              <Seal className="seal"><path d="M50 26 C38 26 32 36 32 44 C32 58 50 76 50 76 C50 76 68 58 68 44 C68 36 62 26 50 26Z" fill="none" stroke="#e8c46a" strokeWidth="3" /><circle cx="50" cy="44" r="6" fill="#e8c46a" /></Seal>
+              <span>Local</span><strong>{VENUE.name}</strong><small>{VENUE.address}</small>
+              <a className="link" href={MAPS_URL} target="_blank" rel="noopener noreferrer">Ver no mapa ↗</a>
+            </article></Reveal>
+          </div>
+          <Reveal className="title-center"><Countdown date={EVENT_DATE} /></Reveal>
         </div>
       </section>
 
-      <section className="gallery section">
-        <div className="section-number">05 / REFERÊNCIAS</div>
-        <div className="refs-heading">
-          <h2>Mood da<br /><em>noite</em></h2>
-          <p>Algumas referências de look e clima pra te inspirar.</p>
-        </div>
-        <div className="moodboard">
-          {Array.from({ length: MOOD_SLOTS }, (_, index) => (
-            <div key={index} className="slot" data-slot={`mood-${index + 1}`}>referência {index + 1}</div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mission section">
-        <div className="mission-card">
-          <p className="section-number light">06 / PRA NÃO ESQUECER</p>
-          <h2>Até o banquete...</h2>
-          <ol>
-            <li><b>01</b><span>Reservar a data.</span><i>○</i></li>
-            <li><b>02</b><span>Separar um detalhe medieval (se quiser).</span><i>○</i></li>
-            <li><b>03</b><span>Confirmar presença ao reino.</span><i>○</i></li>
-            <li><b>04</b><span>Anotar o endereço: {VENUE.name}.</span><i>○</i></li>
-          </ol>
-          <p className="mission-foot">O resto vem depois —<br /><em>por enquanto, só guarde a data.</em></p>
+      {/* 5 · Presença */}
+      <section className="block" id="presenca">
+        <div className="container two-col rsvp-grid">
+          <Reveal>
+            <Parchment>
+              <p className="section-number">IV · Resposta ao reino</p>
+              <h2>Vós vindes ao <em>banquete</em>?</h2>
+              <Divider className="divider" />
+              <p>Enviai vosso nome para que seja incluído na lista e dizei se levais alguém convosco.</p>
+              <RsvpForm />
+            </Parchment>
+          </Reveal>
+          <Reveal className="quill-wrap" delay={150}>
+            <Quill className="quill" />
+            <Candle className="candle c1" />
+            <Candle className="candle c2" />
+          </Reveal>
         </div>
       </section>
 
-      <section className="closing section">
-        <Stars count={20} />
-        <p className="closing-top">{COUPLE.first} & {COUPLE.second} —</p>
-        <h2>vós vindes ao <em>banquete</em>?</h2>
-        <div className="actions centered">
-          {EVENT_DATE && <button className="button primary" onClick={saveCalendar}>＋ Salvar na agenda</button>}
-          <a className="button ghost" href="#presenca">Confirmar presença ☾</a>
+      {/* 6 · Lembretes */}
+      <section className="block" id="lembretes">
+        <div className="container narrow">
+          <Reveal>
+            <Parchment>
+              <p className="section-number">V · Para não esquecer</p>
+              <h2>Até o <em>banquete</em>...</h2>
+              <Divider className="divider" />
+              <ol className="todo">
+                <li><b>I</b><span>Reservar sábado, 17 de outubro.</span></li>
+                <li><b>II</b><span>Separar um detalhe medieval (se quiser).</span></li>
+                <li><b>III</b><span>Confirmar presença ao reino.</span></li>
+                <li><b>IV</b><span>Anotar o endereço: {VENUE.name}.</span></li>
+              </ol>
+              <p className="center"><em>O resto vem depois. Por enquanto, só guardai a data.</em></p>
+            </Parchment>
+          </Reveal>
         </div>
-        <p className="last-line">Boa companhia, boas histórias e mais um ano para celebrar.</p>
       </section>
+
+      {/* 7 · Encerramento */}
+      <section className="closing">
+        <Moon className="closing-moon" />
+        <Candle className="candle cl1" />
+        <Candle className="candle cl2" />
+        <Reveal className="closing-copy">
+          <Goblet className="closing-goblet" />
+          <p className="eyebrow light">{COUPLE.first} &amp; {COUPLE.second}</p>
+          <h2 className="light">Vós vindes ao <em>banquete</em>?</h2>
+          <p className="light-note">Boa companhia, boas histórias e mais um ano para celebrar.</p>
+          <div className="actions center-actions">
+            <button className="btn btn-gold" onClick={saveCalendar}>＋ Salvar na agenda</button>
+            <a className="btn btn-ghost-light" href="#presenca">Confirmar presença</a>
+          </div>
+        </Reveal>
+        <Castle className="closing-castle" />
+      </section>
+
       <footer>
-        <div className="footer-row">
-          <span>{COUPLE.first} & {COUPLE.second}</span>
-          <span>✦ Save the Date ✦</span>
-        </div>
+        <span>{COUPLE.first} &amp; {COUPLE.second}</span>
+        <span>✦ Save the Date · 17.10.2026 ✦</span>
       </footer>
     </main>
   );
