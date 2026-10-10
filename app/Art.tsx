@@ -8,33 +8,18 @@ const GOLD = (
   </linearGradient>
 );
 
-/** Lua crescente com rosto, dourada. */
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+/** Lua crescente com rosto (pintura recortada do brasão). */
 export function Moon({ className, style }: P) {
-  return (
-    <svg className={className} style={style} viewBox="0 0 120 130" role="img" aria-label="Lua crescente">
-      <defs>{GOLD}</defs>
-      <path d="M72 6 A58 58 0 1 0 114 100 A46 46 0 1 1 72 6Z" fill="url(#gold)" stroke="#6b4a10" strokeWidth="1.5" />
-      <path d="M38 56 q7 6 14 0" fill="none" stroke="#5a3a0c" strokeWidth="2" strokeLinecap="round" />
-      <path d="M30 74 q10 4 14 -4" fill="none" stroke="#5a3a0c" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M46 88 q8 6 16 2" fill="none" stroke="#5a3a0c" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="30" cy="70" r="4" fill="#e9a07a" opacity=".55" />
-    </svg>
-  );
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className={className} style={style} src={`${BASE_PATH}/arte/lua.png`} alt="Lua crescente dourada" width={258} height={323} />;
 }
 
-/** Estrela de oito pontas. */
+/** Estrela de oito pontas (pintura recortada do brasão). */
 export function Star({ className, style }: P) {
-  const pts = Array.from({ length: 16 }, (_, i) => {
-    const a = (Math.PI / 8) * i - Math.PI / 2;
-    const r = i % 2 === 0 ? (i % 4 === 0 ? 50 : 34) : 11;
-    return `${(50 + r * Math.cos(a)).toFixed(1)},${(50 + r * Math.sin(a)).toFixed(1)}`;
-  }).join(" ");
-  return (
-    <svg className={className} style={style} viewBox="0 0 100 100" aria-hidden="true">
-      <defs>{GOLD}</defs>
-      <polygon points={pts} fill="url(#gold)" stroke="#6b4a10" strokeWidth="1" strokeLinejoin="round" />
-    </svg>
-  );
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className={className} style={style} src={`${BASE_PATH}/arte/estrela.png`} alt="" aria-hidden="true" width={178} height={205} />;
 }
 
 /** Brasão com monograma. */

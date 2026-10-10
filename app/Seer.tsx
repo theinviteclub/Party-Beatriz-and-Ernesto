@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 /** Vidente com cartas de tarot que viram sozinhas, bola de cristal e mãos que se movem. */
 const CARDS = [
   { x: 52, label: "XVIII", delay: 0 },
@@ -9,22 +11,10 @@ const CARDS = [
 
 function Face({ kind }: { kind: number }) {
   if (kind === 0) {
-    // A Lua
-    return (
-      <g>
-        <path d="M0 -26 A26 26 0 1 0 22 14 A20 20 0 1 1 0 -26Z" fill="url(#sGold)" />
-        <circle cx="-14" cy="-24" r="2" fill="#f6dc94" /><circle cx="18" cy="-26" r="1.6" fill="#f6dc94" />
-      </g>
-    );
+    return <image href={`${BASE_PATH}/arte/lua.png`} x="-22" y="-28" width="44" height="55" />;
   }
   if (kind === 1) {
-    // A Estrela
-    const pts = Array.from({ length: 16 }, (_, i) => {
-      const a = (Math.PI / 8) * i - Math.PI / 2;
-      const r = i % 2 === 0 ? 30 : 9;
-      return `${(r * Math.cos(a)).toFixed(1)},${(r * Math.sin(a)).toFixed(1)}`;
-    }).join(" ");
-    return <polygon points={pts} fill="url(#sGold)" />;
+    return <image href={`${BASE_PATH}/arte/estrela.png`} x="-26" y="-30" width="52" height="60" />;
   }
   // O Sol
   return (
