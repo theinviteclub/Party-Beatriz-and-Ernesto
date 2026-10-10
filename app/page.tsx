@@ -10,8 +10,8 @@ const TIME = "19h30";
 const VENUE = { name: "Velho Monge", address: "R. Feira de Santana, 17 - Parque 10 de Novembro" };
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${VENUE.name} ${VENUE.address} Manaus`);
 const EVENT_DATE = new Date("2026-10-17T19:30:00-04:00");
-// TODO: trocar pelo formulário do casal (https://formspree.io/f/xxxx). Vazio = formulário desativado.
-const FORMSPREE_ENDPOINT = "";
+// Mesmo Formspree do save the date da Ju: as respostas chegam no e-mail dela. O campo "evento" separa as duas festas.
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlgqaybl";
 
 function pad(value: number) {
   return String(Math.max(0, value)).padStart(2, "0");
@@ -132,6 +132,8 @@ function RsvpForm() {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
+          _subject: "Confirmação · Beatriz & Ernesto (17/10)",
+          evento: "Beatriz & Ernesto · 17/10/2026",
           nome: name.trim(),
           vai: attending === "yes" ? "Sim" : attending === "maybe" ? "Talvez" : "Não",
           acompanhantes: guests.map((g) => g.name.trim()).filter(Boolean).join(", ") || "Nenhum",
