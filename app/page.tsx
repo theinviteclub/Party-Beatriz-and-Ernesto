@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Candle, Divider, Moon, Seal, Star } from "./Art";
 import Oracle from "./Oracle";
-import SkyCard from "./SkyCard";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const COUPLE = { first: "Beatriz", second: "Ernesto" };
@@ -368,20 +367,25 @@ export default function Home() {
       {/* 7 · Encerramento */}
       <section className="closing">
         <div className="card-end">
-          <SkyCard className="sky-tall" />
-          <SkyCard className="sky-wide" w={1200} h={700} count={150} />
-          <Moon className="closing-moon" />
-          <Candle className="candle cl1" />
-          <Candle className="candle cl2" />
-          <Reveal className="closing-copy">
-            <p className="eyebrow light">{COUPLE.first} &amp; {COUPLE.second}</p>
-            <h2 className="light">Mais um ano em volta do <em>sol</em></h2>
-            <p className="light-note">Venha brindar com a gente mais uma volta ao redor do sol.</p>
-            <div className="actions center-actions">
-              <button className="btn btn-gold" onClick={saveCalendar}>＋ Salvar na agenda</button>
-              <a className="btn btn-ghost-light" href="#presenca">Confirmar presença</a>
-            </div>
-          </Reveal>
+          <div className="card-inner" style={{ ["--paper" as string]: `url(${BASE_PATH}/arte/papel.webp)` }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="end-sun" src={`${BASE_PATH}/arte/colagem-sol.webp`} alt="" aria-hidden="true" width={480} height={481} />
+            <Moon className="closing-moon" />
+            <Star className="end-star es1" />
+            <Star className="end-star es2" />
+            <Candle className="candle cl1" />
+            <Candle className="candle cl2" />
+            <Reveal className="closing-copy">
+              <p className="eyebrow">{COUPLE.first} &amp; {COUPLE.second}</p>
+              <h2>Mais um ano em volta do <em>sol</em></h2>
+              <Divider className="divider end-divider" />
+              <p className="end-note">Venha brindar com a gente mais uma volta ao redor do sol.</p>
+              <div className="actions center-actions">
+                <button className="btn btn-wine" onClick={saveCalendar}>＋ Salvar na agenda</button>
+                <a className="btn btn-ghost" href="#presenca">Confirmar presença</a>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
