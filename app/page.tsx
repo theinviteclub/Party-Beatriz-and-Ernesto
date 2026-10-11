@@ -42,7 +42,7 @@ function Reveal({ children, className = "", delay = 0, as: Tag = "div" }: { chil
 /** Folha de pergaminho com borda rasgada. */
 function Parchment({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`sheet ${className}`}>
+    <div className={`sheet ${className}`} style={{ ["--paper" as string]: `url(${BASE_PATH}/arte/papel.webp)` }}>
       <div className="parchment">{children}</div>
     </div>
   );

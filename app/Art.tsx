@@ -38,19 +38,10 @@ export function Crest({ className, style }: P) {
   );
 }
 
-/** Silhueta de castelo. */
+/** Castelo pintado ao luar (PNG com fundo transparente). */
 export function Castle({ className, style }: P) {
-  return (
-    <svg className={className} style={style} viewBox="0 0 600 150" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M0 150 V118 H24 V100 H34 V108 H44 V100 H54 V118 H90 V82 H100 V90 H110 V82 H120 V90 H130 V82 H140 V118 H180 V70 L196 44 L212 70 V118 H250 V96 H262 V104 H274 V96 H286 V104 H298 V96 H310 V118 H340 V60 H350 V68 H360 V60 H370 V68 H380 V60 H390 V118 H420 V76 L438 36 L456 76 V118 H492 V90 H502 V98 H512 V90 H522 V98 H532 V90 H542 V118 H570 V104 H580 V112 H590 V104 H600 V150 Z"
-      />
-      <rect x="192" y="88" width="8" height="16" rx="4" fill="#0b1030" opacity=".7" />
-      <rect x="434" y="86" width="8" height="18" rx="4" fill="#0b1030" opacity=".7" />
-      <rect x="360" y="82" width="7" height="14" rx="3.5" fill="#0b1030" opacity=".7" />
-    </svg>
-  );
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className={className} style={style} src={`${BASE_PATH}/arte/castelo.webp`} alt="" aria-hidden="true" width={1800} height={600} />;
 }
 
 export function Goblet({ className, style }: P) {
