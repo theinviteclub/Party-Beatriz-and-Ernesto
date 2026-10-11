@@ -52,7 +52,7 @@ main { position:relative; z-index:1; }
 .btn-ghost-light { background:transparent; color:var(--gold-soft); border-color:var(--gold); }
 
 /* capa */
-.hero { position:relative; min-height:100svh; display:grid; place-items:center; padding:64px 16px clamp(150px,24vw,330px); overflow:hidden; }
+.hero { position:relative; min-height:100svh; display:grid; place-items:center; padding:64px 16px 96px; overflow:hidden; }
 .hero-sheet { position:relative; z-index:3; width:min(100%,640px); text-align:center; animation:unfurl 1.4s cubic-bezier(.2,.8,.2,1) both; transform-origin:50% 0; }
 .hero h1 { font-size:clamp(2.6rem,10vw,5rem); display:flex; flex-direction:column; align-items:center; }
 .hero h1 em { font-size:.55em; line-height:.9; }
@@ -76,7 +76,7 @@ main { position:relative; z-index:1; }
 @keyframes drift { 0%,100%{translate:0 0} 50%{translate:-24px 8px} }
 @keyframes driftL { 0%,100%{translate:0 0} 50%{translate:24px 8px} }
 .hero-castle { position:absolute; left:50%; bottom:0; translate:-50% 0; width:max(100%,860px); max-width:none; height:auto; z-index:2; pointer-events:none; filter:drop-shadow(0 -10px 30px #0006); }
-.scroll { position:absolute; bottom:clamp(86px,15vw,176px); z-index:4; color:var(--gold-soft); text-decoration:none; font-family:"Cinzel",serif; letter-spacing:.15em; font-size:.75rem; text-transform:uppercase; animation:bob 2.4s ease-in-out infinite; }
+.scroll { position:absolute; bottom:28px; z-index:4; color:var(--gold-soft); text-decoration:none; font-family:"Cinzel",serif; letter-spacing:.15em; font-size:.75rem; text-transform:uppercase; animation:bob 2.4s ease-in-out infinite; }
 @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
 .ribbon { position:relative; z-index:2; background:var(--velvet); color:var(--gold-soft); overflow:hidden; white-space:nowrap; padding:14px 0; font-family:"Cinzel",serif; letter-spacing:.3em; border-block:2px solid var(--gold-d); }
@@ -148,7 +148,7 @@ main { position:relative; z-index:1; }
 .todo b { font-family:"Uncial Antiqua",serif; font-weight:400; color:var(--gold-d); }
 
 /* encerramento */
-.closing { position:relative; z-index:1; text-align:center; padding:clamp(80px,12vw,160px) 16px clamp(190px,30vw,430px); overflow:hidden; background:radial-gradient(ellipse at 50% 100%,#3b1450,transparent 65%); }
+.closing { position:relative; z-index:1; text-align:center; padding:clamp(80px,12vw,160px) 16px clamp(90px,12vw,150px); overflow:hidden; background:radial-gradient(ellipse at 50% 100%,#3b1450,transparent 65%); }
 .closing-copy { position:relative; z-index:3; }
 .closing-moon { position:absolute; width:clamp(90px,14vw,170px); left:8%; top:10%; opacity:.9; animation:floaty 8s ease-in-out infinite; filter:drop-shadow(0 0 26px #d9a44166); }
 .closing-goblet { width:84px; margin:0 auto 12px; display:block; filter:drop-shadow(0 0 16px #d9a44166); animation:floaty 6s ease-in-out infinite; }

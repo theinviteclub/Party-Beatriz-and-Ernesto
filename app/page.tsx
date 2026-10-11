@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Candle, Castle, Divider, Goblet, Moon, Seal, Star } from "./Art";
+import { Candle, Divider, Goblet, Moon, Seal, Star } from "./Art";
 import Oracle from "./Oracle";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -256,7 +256,6 @@ export default function Home() {
         <Star className="hero-star hs3" />
         <img className="hero-cloud hc-l" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
         <img className="hero-cloud hc-r" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
-        <Castle className="hero-castle" />
         <Parchment className="hero-sheet">
           <p className="eyebrow">Por decreto do reino</p>
           <h1><span>{COUPLE.first}</span><em>&amp;</em><span>{COUPLE.second}</span></h1>
@@ -380,7 +379,6 @@ export default function Home() {
             <a className="btn btn-ghost-light" href="#presenca">Confirmar presença</a>
           </div>
         </Reveal>
-        <Castle className="closing-castle" />
       </section>
 
       <footer>
