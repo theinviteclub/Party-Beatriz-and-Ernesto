@@ -228,6 +228,8 @@ function KnightsModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+const EL = (name: string) => `${BASE_PATH}/arte/${name}.webp`;
+
 const DATE_LONG = EVENT_DATE.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "America/Manaus" });
 
 export default function Home() {
@@ -254,8 +256,14 @@ export default function Home() {
         <Star className="hero-star hs1" />
         <Star className="hero-star hs2" />
         <Star className="hero-star hs3" />
-        <img className="hero-cloud hc-l" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
-        <img className="hero-cloud hc-r" src={`${BASE_PATH}/nuvem.png`} alt="" aria-hidden="true" />
+        {/* eslint-disable @next/next/no-img-element */}
+        <img className="hero-sunface" src={EL("el-sol")} alt="" aria-hidden="true" width={640} height={670} />
+        <img className="hero-bank hb-r" src={EL("el-nuvens")} alt="" aria-hidden="true" width={1300} height={988} />
+        <img className="hero-bank hb-l" src={EL("el-nuvens")} alt="" aria-hidden="true" width={1300} height={988} />
+        <img className="drift-cloud dc1" src={EL("el-nuvem")} alt="" aria-hidden="true" width={800} height={279} />
+        <img className="drift-cloud dc2" src={EL("el-nuvem")} alt="" aria-hidden="true" width={800} height={279} />
+        <img className="hero-rabbit" src={EL("el-coelho")} alt="" aria-hidden="true" width={340} height={390} />
+        {/* eslint-enable @next/next/no-img-element */}
         <Parchment className="hero-sheet">
           <p className="eyebrow">Por decreto do reino</p>
           <h1><span>{COUPLE.first}</span><em>&amp;</em><span>{COUPLE.second}</span></h1>
@@ -281,7 +289,7 @@ export default function Home() {
       {/* 2 · O decreto */}
       <section className="block" id="decreto">
         <div className="container two-col">
-          <Reveal>
+          <Reveal className="rel">
             <Parchment>
               <p className="section-number">I · O decreto</p>
               <h2>Vinde <em>celebrar</em> conosco</h2>
@@ -289,8 +297,12 @@ export default function Home() {
               <p>Por decreto do reino, {COUPLE.first} e {COUPLE.second} convidam vossa senhoria para uma noite medieval de banquete, lua cheia e céu estrelado.</p>
               <p>Boa companhia, boas histórias e mais um ano para celebrar.</p>
             </Parchment>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="st-lute" src={EL("el-alaudista")} alt="" aria-hidden="true" width={236} height={316} />
           </Reveal>
           <Reveal className="crest-wrap" delay={150}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="crest-halo" src={EL("el-sol-lua")} alt="" aria-hidden="true" width={510} height={432} />
             <img className="crest" onClick={crestTap} src={`${BASE_PATH}/arte/brasao.webp`} alt="Brasão de Beatriz e Ernesto, com lua, estrela e as iniciais B & E" width={760} height={1013} />
             <Star className="crest-star cs1" />
             <Star className="crest-star cs2" />
@@ -343,13 +355,23 @@ export default function Home() {
             </article></Reveal>
           </div>
           <Reveal className="title-center"><Countdown date={EVENT_DATE} /></Reveal>
+          <div className="vignette" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="vg vg-sword" src={EL("el-espada")} alt="" width={560} height={773} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="vg vg-horse" src={EL("el-cavalo")} alt="" width={560} height={772} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="vg vg-sacre" src={EL("el-sagrado")} alt="" width={620} height={843} />
+          </div>
         </div>
       </section>
 
       {/* 5 · Presença */}
       <section className="block" id="presenca">
         <div className="container two-col rsvp-grid">
-          <Reveal>
+          <Reveal className="rel">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="st-dragon" src={EL("el-dragao")} alt="" aria-hidden="true" width={520} height={786} />
             <Parchment>
               <p className="section-number">III · Resposta ao reino</p>
               <h2>Vós vindes ao <em>banquete</em>?</h2>
@@ -357,6 +379,8 @@ export default function Home() {
               <p>Enviai vosso nome para que seja incluído na lista e dizei se levais alguém convosco.</p>
               <RsvpForm />
             </Parchment>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="st-princess" src={EL("el-princesa")} alt="" aria-hidden="true" width={435} height={584} />
           </Reveal>
           <Reveal className="quill-wrap" delay={150}>
             <Oracle />
@@ -366,7 +390,7 @@ export default function Home() {
 
       {/* 7 · Encerramento */}
       <section className="closing">
-        <div className="card-end">
+        <div className="card-end" style={{ ["--harl" as string]: `url(${BASE_PATH}/arte/el-losangos.webp)` }}>
           <div className="card-inner" style={{ ["--paper" as string]: `url(${BASE_PATH}/arte/papel.webp)` }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="end-sun" src={`${BASE_PATH}/arte/colagem-sol.webp`} alt="" aria-hidden="true" width={480} height={481} />
