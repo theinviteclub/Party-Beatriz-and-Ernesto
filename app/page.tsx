@@ -299,6 +299,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Aviso em colagem */}
+      <section className="block notice" id="aviso">
+        <div className="container">
+          <Reveal>
+            <div className="notice-card" style={{ ["--note" as string]: `url(${BASE_PATH}/arte/colagem-papel.webp)` }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="notice-moon" src={`${BASE_PATH}/arte/colagem-lua.webp`} alt="" aria-hidden="true" width={480} height={465} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="notice-sun" src={`${BASE_PATH}/arte/colagem-sol.webp`} alt="" aria-hidden="true" width={480} height={481} />
+              <Star className="notice-star ns1" />
+              <Star className="notice-star ns2" />
+              <div className="notice-text">
+                <p className="notice-title">Aviso do reino</p>
+                <Divider className="divider notice-divider" />
+                <p className="notice-main">Não precisa usar fantasia.</p>
+                <p>A ideia é apenas entrar no clima da noite do jeito que você se sentir confortável.</p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* 4 · Detalhes */}
       <section className="block" id="detalhes">
         <div className="container">
