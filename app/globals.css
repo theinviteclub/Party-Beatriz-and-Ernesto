@@ -244,3 +244,14 @@ footer { position:relative; z-index:2; background:#070a20; color:var(--gold-soft
 .ns1 { right:4%; top:6%; } .ns2 { left:5%; bottom:10%; animation-delay:-3s; }
 @keyframes noticeFloat { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-8px) rotate(4deg)} }
 @keyframes noticeSpin { to { rotate:360deg; } }
+
+/* encerramento em formato de carta */
+.closing { padding:clamp(40px,6vw,90px) 12px; background:none; overflow:visible; }
+.card-end { position:relative; width:min(100%,560px); min-height:min(92svh,820px); margin:0 auto; border-radius:20px; overflow:hidden; border:3px solid var(--gold); box-shadow:0 0 0 6px #0b1030,0 0 0 7.5px #d9a44199,0 24px 50px #000b; display:grid; place-items:center; padding:clamp(190px,44vw,240px) clamp(24px,7vw,56px) clamp(130px,26vw,180px); background:#0a1030; }
+.skycard-art { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.sc-sun { transform-box:fill-box; transform-origin:50% 50%; animation:noticeSpin 90s linear infinite; }
+.card-end .closing-copy { position:relative; z-index:3; text-shadow:0 2px 12px #0a1030; }
+.card-end .closing-moon { z-index:2; left:9%; top:15%; width:clamp(60px,15%,96px); }
+.card-end .closing h2,.card-end h2 { font-size:clamp(2rem,8vw,3.4rem); }
+.card-end .cl1 { left:8%; bottom:3%; z-index:4; } .card-end .cl2 { right:8%; bottom:4%; z-index:4; }
+.card-end .closing-castle { display:none; }
