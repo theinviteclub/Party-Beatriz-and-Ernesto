@@ -377,9 +377,9 @@ export default function Home() {
             <Candle className="candle cl2" />
             <Reveal className="closing-copy">
               <p className="eyebrow">{COUPLE.first} &amp; {COUPLE.second}</p>
-              <h2>Mais um ano em volta do <em>sol</em></h2>
+              <h2>Hoje o reino faz <em>aniversário</em></h2>
               <Divider className="divider end-divider" />
-              <p className="end-note">Venha brindar com a gente mais uma volta ao redor do sol.</p>
+              <p className="end-note">Venha brindar, dançar e escrever mais uma página dessa história.</p>
               <div className="actions center-actions">
                 <button className="btn btn-wine" onClick={saveCalendar}>＋ Salvar na agenda</button>
                 <a className="btn btn-ghost" href="#presenca">Confirmar presença</a>
